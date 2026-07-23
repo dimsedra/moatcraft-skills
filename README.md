@@ -53,7 +53,7 @@ flowchart TD
 | Skill | Category | Description | Primary Output Artifact |
 | :--- | :--- | :--- | :--- |
 | **`brand-product-alignment`** | Strategy | Conducts fluid brand and product discovery to define positioning, identity boundaries, and experience moats. | `brand-product-alignment-spec.md` |
-| **`front-end-designer`** | Front-End | Applies opinionated UI rules, breathable visual hierarchy, 2nd/3rd idea iteration, and WebGL/Canvas design moats. | Front-End UI Code |
+| **`front-end-designer`** | Front-End | Applies opinionated UI rules, breathable visual hierarchy, 2nd/3rd idea iteration, and universal component moats. | `front-end-design-spec.md` |
 | **`backend-architect`** | Back-End | Conducts natural, jargon-free backend discovery for data flow, operational limits, SLAs, and technical moats. | `backend-architecture-spec.md` |
 | **`progress-mapper`** | Roadmap | Ingests brand/technical specs and decomposes them into a living roadmap of Milestones, Tasks, and atomic TDD sub-tasks. | `progress-map.md` |
 | **`implementation-tdd`** | Execution | Executes artifact-driven Red-Green TDD focusing strictly on functional compliance without premature optimization. | Passing Test Suite & Code |

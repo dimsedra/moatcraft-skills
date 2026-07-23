@@ -34,7 +34,7 @@ This skill acts as an upstream plan & specification auditor executed **before** 
 
 ### Step 1: Plan Artifact & Diff Pinning
 Locate the authoritative plan/specification source and target git ref:
-1. **Plan Sources**: Look for `implementation_plan.md`, `brand-product-alignment-spec.md`, `backend-architecture-spec.md`, PRD files under `docs/` or `specs/`, or issue tracker items.
+1. **Plan Sources**: Look for `implementation_plan.md`, `brand-product-alignment-spec.md`, `front-end-design-spec.md`, `backend-architecture-spec.md`, PRD files under `docs/` or `specs/`, or issue tracker items.
 2. **Git Ref**: Pin the target comparison point (`git rev-parse <fixed-point>`) and capture `git diff <fixed-point>...HEAD`.
 
 **Completion Criterion**: Plan/spec artifact is loaded and non-empty `git diff` is captured. If plan or diff is missing, prompt the user.

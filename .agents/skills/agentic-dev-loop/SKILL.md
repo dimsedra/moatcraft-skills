@@ -70,9 +70,9 @@ This skill defines and orchestrates the **Continuous Agentic Development Loop**.
 ### Phase 2: Technical Specification & Roadmap Layer
 2. **Technical Spec Branching**:
    - **`backend-architect`**: Establishes **Technical System Specifications**, data ownership, API paradigms, reliability targets, and backend technical moats. Generates `backend-architecture-spec.md`.
-   - **`front-end-designer`**: Establishes **Front-End Visual & Interactive Specifications**, 2nd/3rd idea UI concepts, breathable hierarchy, and WebGL/Canvas visual moats.
+   - **`front-end-designer`**: Establishes **Front-End Visual Specifications**, opinionated typography, universal component moats, 2nd/3rd idea UI concepts, and interactive physics. Generates `front-end-design-spec.md`.
 3. **`progress-mapper` (Roadmap & Progress Bridge)**:
-   - Ingests spec artifacts (`brand-product-alignment-spec.md`, `backend-architecture-spec.md`, UI plans) and breaks them down into a living roadmap of Milestones, Tasks, and atomic `implementation-tdd` sub-tasks stored in `progress-map.md`.
+   - Ingests spec artifacts (`brand-product-alignment-spec.md`, `front-end-design-spec.md`, `backend-architecture-spec.md`) and breaks them down into a living roadmap of Milestones, Tasks, and atomic `implementation-tdd` sub-tasks stored in `progress-map.md`.
 
 ### Phase 3: Active Development Loop (Iterative Core)
 4. **`implementation-tdd`**: Execute artifact-driven TDD (Red ➔ Green). Select the next pending sub-task from `progress-map.md`, write failing tests mapping to specs, then write minimal code to pass them.
