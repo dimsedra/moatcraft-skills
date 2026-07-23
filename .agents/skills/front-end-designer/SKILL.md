@@ -22,8 +22,8 @@ Before executing design work, check for the existence of `brand-product-alignmen
 
 1. **Natural Collaboration**: Chat naturally like two designers at a studio whiteboard. Explore visual directions, material textures, and layout dynamics collaboratively.
 2. **Happy-Path Rejection (2nd & 3rd Idea Rule)**: Treat the 1st design idea as the path of least resistance—a generic commodity solution 90% of competitors use. Reject it. Iterate directly to 2nd and 3rd iterations to unlock unique, brand-anchored concepts.
-3. **Respect Standards, Infer Brand-Driven Feel & Textures**:
-   - **UI Standards exist for a reason**: Standard layouts, clear component boundaries, and intuitive navigation provide baseline usability and accessibility. Do NOT break established usability conventions just for aesthetic novelty.
+3. **Form Must Never Compromise Function (High Accessibility & Low Cognitive Load)**:
+   - **Zero Usability Degradation**: Visual expression, surface textures, and brand materialization must **NEVER compromise functionality, high accessibility (WCAG AA/AAA contrast & keyboard navigation), or introduce cognitive overhead**.
    - **Moat via Brand-Derived Feel & Materials**: The design moat comes from the **sensory feel, visual textures, surface materials, and tactile physics** inferred directly from `brand-product-alignment-spec.md` to reinforce the brand identity:
      - *Example 1 (Fluid/Precision Brand)*: Infer **Liquid Glass textures**, dynamic light refraction, subtle chromatic sheen, and fluid spring physics.
      - *Example 2 (Tactile Monolith Brand)*: Infer **Matte Obsidian depth**, brushed metallic borders, heavy tactile resistance, and subtle grain overlays.
@@ -31,7 +31,7 @@ Before executing design work, check for the existence of `brand-product-alignmen
 4. **Non-Generic, Opinionated Typography**:
    - Strictly ban generic, uninspired typography (plain Inter, Roboto, Arial, or default `system-ui` without customized kerning/stylistic sets).
    - Curate deeply opinionated font pairings (e.g., editorial display typefaces, distinct serif/geometric hybrids) matching the brand's voice.
-5. **Breathable Hierarchy & Low Cognitive Load**: Pace information visually. Grant every distinct content block generous, deliberate whitespace. Present one primary focal point per viewport to guide attention effortlessly.
+5. **Breathable Hierarchy & Low Cognitive Overhead**: Pace information visually. Grant every distinct content block generous, deliberate whitespace. Present one primary focal point per viewport to guide attention effortlessly without visual noise.
 6. **Sticky First Impression**: Engage the user within the first 3 seconds. The top fold must immediately project the brand's core lens and vibe, establishing visual authority before the user scrolls.
 
 ---
@@ -63,9 +63,10 @@ Synthesize the visual and material specification into `front-end-design-spec.md`
 - **Banned Fonts**: Inter, Roboto, Arial, Default System UI (unless customized)
 - **Color Token System**: Surface, Text, Accent, and High-Contrast Focus tokens
 
-## 3. Standard Component Integration & Materialization
-- **Usability Baseline**: Respect standard UI layout patterns for intuitive navigation
-- **Component Texture Materialization**: How buttons, cards, and inputs wear the brand material
+## 3. Form-Function Equilibrium & Accessibility Contract
+- **High Accessibility Baseline**: WCAG AA/AAA contrast targets and keyboard focus indicators
+- **Low Cognitive Overhead**: Clean component boundaries and zero clutter
+- **Component Texture Materialization**: How buttons, cards, and inputs wear the brand material without sacrificing clarity
 
 ## 4. Top-Fold 3-Second First Impression Plan
 - **Primary Focal Point**: Hero focal element and immediate brand material projection
@@ -85,7 +86,7 @@ Translate `front-end-design-spec.md` into CSS variables / tokens in `index.css` 
 ### Step 4: Component Assembly & Material Polish
 Build UI components adhering to `front-end-design-spec.md`:
 - Construct top-fold hero section for sticky 3-second impression.
-- Apply brand material textures (e.g. liquid glass sheen) to standard component boundaries without breaking usability.
+- Apply brand material textures (e.g. liquid glass sheen) while enforcing high accessibility and low cognitive load.
 - Refine hover physics and state transitions.
 
 **Completion Criterion**: All UI components are structured semantically, pass accessibility checks, embody the brand's material feel, and `front-end-design-spec.md` is updated.
