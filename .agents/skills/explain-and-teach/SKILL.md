@@ -1,46 +1,53 @@
 ---
 name: explain-and-teach
-description: Provide adaptive, high-level systemic explanations of technical decisions, architecture trade-offs, and design rationale using natural human abstractions and mental models for non-overly-technical users. Use when the user asks "why", requests an explanation of choices, or wants to understand trade-offs or mental models.
+description: Provide adaptive, high-level systemic explanations of technical decisions, architecture trade-offs, and design rationale using natural human abstractions and mental models. Use when the user asks "why", requests an explanation of choices, or wants to understand trade-offs or mental models.
 ---
 
 # Explain and Teach (Adaptive Systemic Explanation)
 
-This skill provides flexible, high-signal explanations of technical decisions, architectural trade-offs, and mental models.
-
-> **Target User Assumption & Framing:**  
-> Assume the user is **not overly technical**. The user is an intuitive, systemic thinker who grasps high-level concepts, architectural trade-offs, and natural human abstractions effortlessly. **Do NOT dump low-level code syntax, raw function signatures, or technical jargon** unless the user explicitly requests code-level technical specifics.
+This skill delivers flexible, high-signal explanations of technical decisions, architectural trade-offs, and conceptual models.
 
 ---
 
-## Operating Core: Match the Requested Slice
+## 1. Human Cognitive Architecture Principle
 
-Deliver **ONLY** the specific conceptual slice requested. Do NOT force a rigid multi-section template unless the user explicitly asks for a full deep-dive.
+Human cognition processes **high-level mental models, cause-and-effect relationships, functional abstractions, and natural analogies** far more efficiently than parse-heavy code syntax or implementation jargon.
 
-### Explanation Branches (Pick ONE based on user prompt):
+- **Default Communication State**: Explain decisions using clear human logic, intuitive abstractions, and structural mental models.
+- **On-Demand Code Mechanics**: Provide low-level code syntax, function signatures, and implementation mechanics **only when explicitly requested**.
+- **High Signal, Zero Condescension**: Omit conversational filler, patronizing hand-waving, and redundant summaries. Deliver direct, high-density rationale.
 
-#### Branch A: Trade-off & Decision Rationale (When user asks *"Why A over B?"*, *"What's the trade-off?"*)
-Deliver a high-level conceptual trade-off breakdown:
+---
+
+## 2. Operating Core: Match the Requested Slice
+
+Deliver **ONLY** the specific conceptual module requested by the user prompt. Do NOT force a rigid multi-section template unless the user explicitly requests a full deep-dive.
+
+### Explanation Branches:
+
+#### Branch A: Trade-off & Rationale (When prompt asks *"Why A over B?"*, *"What's the trade-off?"*)
+Deliver a high-level trade-off breakdown:
 - **Selected Path vs. Rejected Alternatives (2nd/3rd ideas)** using plain human logic.
-- **Net Gain vs. Net Cost** (e.g. *"We gain instant search speed, but trade off extra storage footprint"*).
-- *No low-level code dumps or syntax walkthroughs.*
+- **Net Gain vs. Net Cost** (e.g., *"Gains instant search performance at the cost of higher memory footprint"*).
+- Omit code dumps and implementation mechanics.
 
-#### Branch B: Systemic Ripple Effect (When user asks *"How does this affect X?"*, *"What breaks if Y changes?"*)
-Deliver a clear cause-and-effect map using intuitive abstractions:
-- High-level flow across system boundaries (Component A ➔ Component B).
-- What changes for the user or product experience if a boundary is altered.
+#### Branch B: Systemic Ripple Effect (When prompt asks *"How does this affect X?"*, *"What breaks if Y changes?"*)
+Deliver a cause-and-effect boundary map using intuitive abstractions:
+- Direct flow across system boundaries (Component A ➔ Component B).
+- Structural consequences for the product or user experience.
 
-#### Branch C: Mental Model Anchor (When user asks *"How does this work fundamentally?"*, *"What's the core concept?"*)
+#### Branch C: Mental Model Anchor (When prompt asks *"How does this work fundamentally?"*, *"What's the core concept?"*)
 Deliver a clean, first-principles mental model:
-- 1-2 sentence intuitive analogy using natural human concepts (e.g., *"Think of this as a restaurant pass-through window where..."*).
+- 1-2 sentence intuitive analogy or logical invariant that grounds the concept instantly.
 
-#### Branch D: Code-Level Technical Deep-Dive (ONLY when user explicitly asks *"Show me the code details"* or *"How is this implemented technically?"*)
-Deliver low-level code syntax, function signatures, and technical mechanics.
+#### Branch D: Code-Level Technical Mechanics (ONLY when prompt asks *"Show me the code"* or *"How is this implemented technically?"*)
+Deliver low-level code syntax, function signatures, and implementation mechanics.
 
 ---
 
-## Communication Style & Cognitive Calibration
+## 3. Transparency of Alternatives
 
-- **High-Level Abstractions First**: Communicate using natural human logic, clear mental models, and intuitive analogies.
-- **On-Demand Technical Depth**: Keep technical code details hidden until explicitly requested.
-- **High Signal, Zero Patronizing Fluff**: Respect the user's strong natural cognitive speed. Omit conversational filler, condescending summaries, and hand-waving.
-- **Transparent 2nd & 3rd Ideas**: Always explain *why* alternatives were considered and discarded in plain language.
+When explaining any design or architectural decision, always disclose:
+1. The **primary choice** selected.
+2. The **2nd and 3rd alternative ideas** that were considered and discarded.
+3. The **underlying trade-off rationale** behind the rejection.
