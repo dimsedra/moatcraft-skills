@@ -14,7 +14,7 @@ This skill delivers flexible, high-signal explanations of technical decisions, a
 Human cognition processes **high-level mental models, cause-and-effect relationships, functional abstractions, and natural analogies** far more efficiently than parse-heavy code syntax or implementation jargon.
 
 - **Default Communication State**: Explain decisions using clear human logic, intuitive abstractions, and structural mental models.
-- **On-Demand Code Mechanics**: Provide low-level code syntax, function signatures, and implementation mechanics **only when explicitly requested**.
+- **Hybrid Low-Level Mapping**: When low-level code mechanics are explicitly requested, **NEVER present pure isolated code dumps**. The explanation must remain **hybrid**—effortlessly mapping every line of code, parameter, or syntax structure back to its high-level mental model and trade-off rationale.
 - **High Signal, Zero Condescension**: Omit conversational filler, patronizing hand-waving, and redundant summaries. Deliver direct, high-density rationale.
 
 ---
@@ -40,8 +40,11 @@ Deliver a cause-and-effect boundary map using intuitive abstractions:
 Deliver a clean, first-principles mental model:
 - 1-2 sentence intuitive analogy or logical invariant that grounds the concept instantly.
 
-#### Branch D: Code-Level Technical Mechanics (ONLY when prompt asks *"Show me the code"* or *"How is this implemented technically?"*)
-Deliver low-level code syntax, function signatures, and implementation mechanics.
+#### Branch D: Hybrid Technical Code Mechanics (ONLY when prompt asks *"Show me the code"* or *"How is this implemented technically?"*)
+Deliver a hybrid code breakdown that anchors implementation to concept:
+- Present the essential code block/signature.
+- **Effortlessly map specific code lines directly back to the high-level mental model** (e.g., *"Line 42 enforces the concurrency boundary we defined in the high-level model..."*).
+- Never output unanchored, isolated syntax dumps.
 
 ---
 
