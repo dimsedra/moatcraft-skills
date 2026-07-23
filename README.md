@@ -28,11 +28,17 @@ npx skills add dimsedra/moatcraft-skills@brand-product-alignment
 
 ```mermaid
 flowchart TD
-    A["brand-product-alignment<br/><i>(Pure Brand & Product Identity)</i>"] --> B1["front-end-designer<br/><i>(Visual & UI Execution)</i>"]
+    A["brand-product-alignment<br/><i>(Pure Brand & Product Identity)</i>"] --> B1["front-end-designer<br/><i>(Visual & UI Spec)</i>"]
     A --> B2["backend-architect<br/><i>(Technical System Spec)</i>"]
     
     B1 --> MAP["progress-mapper<br/><i>(Roadmap & Task Decomposition)</i>"]
     B2 --> MAP
+    
+    %% Upstream Cascade & Escalation Pathways
+    A -. "Brand Shift (Cascade Re-audit)" .-> B1
+    A -. "Brand Shift (Cascade Re-audit)" .-> B2
+    B2 -. "Backend Spec Shift (Refine Tasks)" .-> MAP
+    B1 -. "Visual Spec Shift (Refine Tasks)" .-> MAP
     
     MAP --> TDD["implementation-tdd<br/><i>(Red ➔ Green TDD)</i>"]
     
@@ -44,6 +50,10 @@ flowchart TD
     end
     
     REVIEW -- "Clean Pass" --> SHIP["Ship / Next Sub-Task / Iteration"]
+    
+    %% Strategic Escalation Pathways
+    TDD -. "Strategic Contradiction (Escalate Upstream)" .-> B2
+    TDD -. "Brand Alignment Shift (Escalate Upstream)" .-> A
 ```
 
 ---

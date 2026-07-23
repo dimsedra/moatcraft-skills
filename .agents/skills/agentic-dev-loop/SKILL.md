@@ -1,11 +1,11 @@
 ---
 name: agentic-dev-loop
-description: Orchestrate the continuous agentic development loop across brand alignment, front-end design, TDD implementation, alignment auditing, and two-axis code review. Use when guiding a feature, refactor, or iteration through the full development loop.
+description: Orchestrate the continuous agentic development loop across brand alignment, front-end design, backend architecture, roadmap tracking, TDD implementation, alignment auditing, and two-axis code review. Use when guiding a feature, refactor, or iteration through the full development loop.
 ---
 
 # Agentic Development Loop
 
-This skill defines and orchestrates the **Continuous Agentic Development Loop**. Development is not a one-way linear pipeline; it is an iterative feedback loop where audit failures and code review findings cycle back into TDD implementation until quality and spec fidelity are locked.
+This skill defines and orchestrates the **Continuous Agentic Development Loop**. Development is not a one-way linear pipeline; it is a bi-directional feedback loop where audit failures, code review findings, or mid-flight strategic requirement shifts cycle back upstream until quality, spec fidelity, and brand alignment are locked.
 
 ---
 
@@ -13,11 +13,17 @@ This skill defines and orchestrates the **Continuous Agentic Development Loop**.
 
 ```mermaid
 flowchart TD
-    A["brand-product-alignment<br/><i>(Pure Brand & Product Identity)</i>"] --> B1["front-end-designer<br/><i>(Visual & UI Execution)</i>"]
+    A["brand-product-alignment<br/><i>(Pure Brand & Product Identity)</i>"] --> B1["front-end-designer<br/><i>(Visual & UI Spec)</i>"]
     A --> B2["backend-architect<br/><i>(Technical System Spec)</i>"]
     
     B1 --> MAP["progress-mapper<br/><i>(Roadmap & Task Decomposition)</i>"]
     B2 --> MAP
+    
+    %% Upstream Cascade & Escalation Pathways
+    A -. "Brand Shift (Cascade Re-audit)" .-> B1
+    A -. "Brand Shift (Cascade Re-audit)" .-> B2
+    B2 -. "Backend Spec Shift (Refine Tasks)" .-> MAP
+    B1 -. "Visual Spec Shift (Refine Tasks)" .-> MAP
     
     MAP --> TDD["implementation-tdd<br/><i>(Red ➔ Green TDD)</i>"]
     
@@ -29,7 +35,29 @@ flowchart TD
     end
     
     REVIEW -- "Clean Pass" --> SHIP["Ship / Next Sub-Task / Iteration"]
+    
+    %% Strategic Escalation Pathways
+    TDD -. "Strategic Contradiction (Escalate Upstream)" .-> B2
+    TDD -. "Brand Alignment Shift (Escalate Upstream)" .-> A
 ```
+
+---
+
+## Upstream Cascade & Mid-Flight Re-alignment Protocol
+
+Development requirements inevitably shift during real-world execution. The agent must handle bi-directional upstream flow:
+
+### 1. Downstream Cascade Re-Audit (Top-Down Shift)
+- **Brand/Product Shift**: If `brand-product-alignment-spec.md` is updated mid-flight, downstream dependent specs (`front-end-design-spec.md`, `backend-architecture-spec.md`) and `progress-map.md` are automatically flagged for a **Cascade Re-Audit**.
+- **Backend/Front-End Spec Shift**: If `backend-architecture-spec.md` or `front-end-design-spec.md` is modified, `progress-mapper` automatically re-audits `progress-map.md` to update dependent tasks/sub-tasks.
+
+### 2. Upstream Strategic Escalation (Bottom-Up Escalation)
+- If during `implementation-tdd`, `alignment-audit`, or `code-review` an unresolvable technical contradiction, impossible SLA trade-off, or fundamental brand mismatch is discovered, the agent must **escalate back UP**:
+  - Escalate to `backend-architect` to resolve infrastructure contradictions.
+  - Escalate to `brand-product-alignment` to resolve fundamental positioning or boundary mismatches.
+
+### 3. Progress Mapper Re-alignment
+- Whenever an upstream spec is modified or an upstream escalation occurs, `progress-mapper` ingests the updated spec, invalidates impacted roadmap items, reopens affected completed phases (`[x]` ➔ `[ ] Reopened: [Reason]`), and injects updated atomic TDD sub-tasks into `progress-map.md`.
 
 ---
 
