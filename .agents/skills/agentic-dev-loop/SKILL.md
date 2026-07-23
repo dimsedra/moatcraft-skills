@@ -11,53 +11,24 @@ This skill defines and orchestrates the **Continuous Agentic Development Loop**.
 
 ## The Development Loop Architecture
 
-```
-                    ┌─────────────────────────┐
-                    │ brand-product-alignment │ (Pure Brand & Product Identity)
-                    └────────────┬────────────┘
-                                 │
-                   ┌─────────────┴─────────────┐
-                   ▼                           ▼
-      ┌─────────────────────────┐ ┌─────────────────────────┐
-      │   front-end-designer    │ │    backend-architect    │
-      │ (Visual & UI Execution) │ │ (Technical System Spec) │
-      └────────────┬────────────┘ └────────────┬────────────┘
-                   │                           │
-                   └─────────────┬─────────────┘
-                                 │
-                                 ▼
- ┌─────────────────────────────────────────────────────────────┐
- │                THE ACTIVE DEVELOPMENT LOOP                  │
- │                                                             │
- │            ┌───────────────────────────────────┐            │
- │ ┌─────────►│        implementation-tdd         │◄─────────┐ │
- │ │          │          (Red ➔ Green)            │          │ │
- │ │          └─────────────────┬─────────────────┘          │ │
- │ │                            │                            │ │
- │ │                            ▼                            │ │
- │ │          ┌───────────────────────────────────┐          │ │
- │ │          │          alignment-audit          │          │ │
- │ │          │     (Plan & Spec Fidelity)        │          │ │
- │ │          └─────────────────┬─────────────────┘          │ │
- │ │                            │                            │ │
- │ │             [Plan Deviations / Gaps?]                   │ │
- │ │             /                       \                   │ │
- │ │          (Yes)                     (Passed)             │ │
- │ │            │                          │                 │ │
- │ └────────────┘                          ▼                 │ │
- │                            ┌───────────────────┐          │ │
- │                            │    code-review    │          │ │
- │                            │(Quality & Robust) │          │ │
- │                            └─────────┬─────────┘          │ │
- │                                      │                    │ │
- │                        [Quality Breaches Found?]          │ │
- │                        /                       \          │ │
- │                     (Yes)                      (Pass)     │ │
- │                       │                          │        │ │
- │                       └──────────────────────────┼────────┘ │
- └──────────────────────────────────────────────────┼──────────┘
-                                                    ▼
-                                            Ship / Next Loop Iteration
+```mermaid
+flowchart TD
+    A["brand-product-alignment<br/><i>(Pure Brand & Product Identity)</i>"] --> B1["front-end-designer<br/><i>(Visual & UI Execution)</i>"]
+    A --> B2["backend-architect<br/><i>(Technical System Spec)</i>"]
+    
+    B1 --> MAP["progress-mapper<br/><i>(Roadmap & Task Decomposition)</i>"]
+    B2 --> MAP
+    
+    MAP --> TDD["implementation-tdd<br/><i>(Red ➔ Green TDD)</i>"]
+    
+    subgraph Active_Development_Loop ["The Active Development Loop"]
+        TDD --> AUDIT["alignment-audit<br/><i>(Plan & Spec Fidelity Check)</i>"]
+        AUDIT -- "Deviations Detected" --> TDD
+        AUDIT -- "Passed" --> REVIEW["code-review<br/><i>(Standards & Robustness Review)</i>"]
+        REVIEW -- "Quality Breaches Found" --> TDD
+    end
+    
+    REVIEW -- "Clean Pass" --> SHIP["Ship / Next Sub-Task / Iteration"]
 ```
 
 ---
