@@ -13,32 +13,46 @@ This skill defines and orchestrates the **Continuous Agentic Development Loop**.
 
 ```mermaid
 flowchart TD
-    A["brand-product-alignment<br/><i>(Pure Brand & Product Identity)</i>"] --> B1["front-end-designer<br/><i>(Visual & UI Spec)</i>"]
-    A --> B2["backend-architect<br/><i>(Technical System Spec)</i>"]
-    
-    B1 --> MAP["progress-mapper<br/><i>(Roadmap & Task Decomposition)</i>"]
-    B2 --> MAP
-    
-    %% Upstream Cascade & Escalation Pathways
-    A -. "Brand Shift (Cascade Re-audit)" .-> B1
-    A -. "Brand Shift (Cascade Re-audit)" .-> B2
-    B2 -. "Backend Spec Shift (Refine Tasks)" .-> MAP
-    B1 -. "Visual Spec Shift (Refine Tasks)" .-> MAP
-    
-    MAP --> TDD["implementation-tdd<br/><i>(Red ➔ Green TDD)</i>"]
-    
-    subgraph Active_Development_Loop ["The Active Development Loop"]
-        TDD --> AUDIT["alignment-audit<br/><i>(Plan & Spec Fidelity Check)</i>"]
-        AUDIT -- "Deviations Detected" --> TDD
-        AUDIT -- "Passed" --> REVIEW["code-review<br/><i>(Standards & Robustness Review)</i>"]
-        REVIEW -- "Quality Breaches Found" --> TDD
+    subgraph Layer1 ["1. Brand Strategy"]
+        A["brand-product-alignment<br/><i>(Brand & Product Identity)</i>"]
     end
-    
-    REVIEW -- "Clean Pass" --> SHIP["Ship / Next Sub-Task / Iteration"]
-    
-    %% Strategic Escalation Pathways
-    TDD -. "Strategic Contradiction (Escalate Upstream)" .-> B2
-    TDD -. "Brand Alignment Shift (Escalate Upstream)" .-> A
+
+    subgraph Layer2 ["2. Specifications Layer"]
+        B1["front-end-designer<br/><i>(Visual & UI Spec)</i>"]
+        B2["backend-architect<br/><i>(Technical System Spec)</i>"]
+    end
+
+    subgraph Layer3 ["3. Roadmap Bridge"]
+        MAP["progress-mapper<br/><i>(Living Roadmap & Tasks)</i>"]
+    end
+
+    subgraph Layer4 ["4. Active Development Loop"]
+        TDD["implementation-tdd<br/><i>(Red ➔ Green TDD)</i>"]
+        AUDIT["alignment-audit<br/><i>(Spec Fidelity Check)</i>"]
+        REVIEW["code-review<br/><i>(Standards & Quality Review)</i>"]
+    end
+
+    SHIP["Ship / Next Iteration"]
+
+    %% Primary Downstream Flow
+    A --> B1
+    A --> B2
+    B1 --> MAP
+    B2 --> MAP
+    MAP --> TDD
+
+    %% Active Inner Loop
+    TDD --> AUDIT
+    AUDIT -- "Deviations Detected" --> TDD
+    AUDIT -- "Passed" --> REVIEW
+    REVIEW -- "Quality Breaches Found" --> TDD
+    REVIEW -- "Clean Pass" --> SHIP
+
+    %% Upstream Cascade & Escalation
+    A -. "Brand Shift (Cascade Re-audit)" .-> MAP
+    B1 -. "UI Spec Shift" .-> MAP
+    B2 -. "Backend Spec Shift" .-> MAP
+    TDD -. "Strategic Contradiction (Escalate Upstream)" .-> A
 ```
 
 ---
