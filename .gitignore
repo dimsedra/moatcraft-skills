@@ -1,0 +1,29 @@
+# System & OS Files
+.DS_Store
+Thumbs.db
+*.tmp
+*.log
+
+# IDE & Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment & Credentials
+.env
+.env.*
+!.env.example
+
+# Temporary / Scratch Directories
+.scratch/
+tmp/
+temp/
+
+# Tool Caches & Skill Lockfiles
+.claude/
+skills-lock.json
+
+# Third-Party Installed Skills (managed via skills-lock.json)
+.agents/skills/find-skills/
+.agents/skills/writing-great-skills/
