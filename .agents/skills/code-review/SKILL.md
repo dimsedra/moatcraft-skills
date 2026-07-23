@@ -1,15 +1,15 @@
 ---
 name: code-review
-description: Conduct a product-aware, two-axis code review (Standards and Spec) evaluating code quality, edge-case robustness, and domain alignment comparing HEAD against a fixed point using parallel sub-agents. Use when reviewing branches, PRs, work-in-progress, or changes since a commit, tag, or branch.
+description: Conduct a product-aware, two-axis code review (Standards and Spec) evaluating code quality, edge-case robustness, and domain alignment comparing HEAD against a fixed point using parallel sub-agents. Use when reviewing feature branches, Pull Requests (PRs), work-in-progress, or changes since a commit, tag, or branch.
 ---
 
 # Code Review (Product-Aware Two-Axis Review)
 
-This skill performs a rigorous code review focusing on **code quality**, **edge-case robustness**, and **domain correctness**. Because sub-agents start with a blank context window, the main agent synthesizes a **5-Layer Context Chain** before spawning parallel sub-agents to evaluate the diff across **Standards** and **Spec** axes.
+This skill performs a rigorous code review focusing on **code quality**, **edge-case robustness**, and **domain correctness** for feature branches and Pull Requests (PRs). Because sub-agents start with a blank context window, the main agent synthesizes a **5-Layer Context Chain** before spawning parallel sub-agents to evaluate the diff across **Standards** and **Spec** axes.
 
 ## Workflow Sequence
 
-`alignment-audit` ➔ `code-review`
+`alignment-audit` ➔ `code-review` ➔ `PR Approval / Merge`
 
 > **Upstream Dependency:** Run the `alignment-audit` skill prior to `code-review` to confirm that all changes match approved plans and PRDs without scope creep. Once alignment is verified, execute `code-review` to evaluate code quality, edge-case robustness, and standards.
 
@@ -23,8 +23,8 @@ A code change can succeed on one axis and fail on the other:
 
 ## Execution Steps
 
-### Step 1: Fixed Point Pinning & Diff Validation
-Identify the comparison target supplied by the user (commit SHA, branch, tag, `main`, `HEAD~N`). If omitted, prompt the user for the fixed point.
+### Step 1: Fixed Point Pinning & PR Diff Validation
+Identify the comparison target supplied by the user (PR target branch `origin/main`, commit SHA, branch, tag, `HEAD~N`). If omitted, default to `origin/main`.
 
 Validate the reference and capture diff inputs:
 1. Verify ref validity: `git rev-parse <fixed-point>`
@@ -52,8 +52,8 @@ Synthesize a neutral, objective **5-Layer Context Chain** to feed into both sub-
 ### Step 3: Spec & Standards Discovery
 
 #### A. Spec Sources (in priority order)
-1. Issue references in commit messages (`#123`, `Closes #45`, `!67`) via `docs/agents/issue-tracker.md`.
-2. User-provided path argument.
+1. Issue references in commit messages (`#123`, `Closes #45`, `!67`) or PR descriptions.
+2. User-provided path argument (`progress-map.md`, `spec.md`).
 3. Spec/PRD files under `docs/`, `specs/`, or `.scratch/` matching the branch or feature.
 4. If missing, prompt user. If unavailable, mark Spec axis as "No spec available".
 
@@ -102,8 +102,10 @@ Include:
 Present findings verbatim or lightly formatted under separate headers:
 
 ```markdown
-## 1. Product & Review Context
+## 1. Product & PR Context
 - **Product**: [Layer 1 Summary]
+- **Target PR / Branch**: `feat/feature-name` -> `main`
+- **Associated Issue**: `#123`
 - **Current Phase & Objective**: [Layer 2 & 3 Summary]
 - **Work Being Reviewed**: [Layer 4 & 5 Summary]
 
@@ -119,11 +121,12 @@ Present findings verbatim or lightly formatted under separate headers:
 
 ---
 
-## 4. Summary & Action Items
+## 4. Summary & PR Gate Recommendation
 - **Standards & Robustness Axis**: X findings (Worst: [Brief description or "None"])
 - **Spec & Domain Axis**: Y findings (Worst: [Brief description or "None"])
+- **PR Decision**: [APPROVE / REQUEST CHANGES / RE-ROUTE TO TDD]
 ```
 
 Do not merge or re-rank findings across axes.
 
-**Completion Criterion**: Dual-axis report presented side-by-side with 5-layer context header and independent single-line summaries per axis.
+**Completion Criterion**: Dual-axis report presented side-by-side with 5-layer context header and PR decision.

@@ -1,6 +1,6 @@
 ---
 name: backend-architect
-description: Conduct high-level backend architecture discovery to establish system boundaries, data models, API paradigms, performance/reliability moats, and architectural guardrails before implementation. Use when designing backend infrastructure, APIs, data systems, or server-side architecture.
+description: Conduct high-level backend architecture discovery to establish system boundaries, data models, API paradigms, performance/reliability moats, and architectural guardrails before implementation. Synthesize backend-architecture-spec.md as a version-controlled technical spec. Use when designing backend infrastructure, APIs, data systems, or server-side architecture.
 ---
 
 # Backend Architect (Fluid System Strategy)
@@ -67,6 +67,11 @@ Once all 5 items on the checklist are checked off through natural conversation, 
 - **Data Persistence Rules**: ...
 ```
 
-Present the spec to the user for confirmation before proceeding to `implementation-tdd`.
+---
 
-**Completion Criterion**: All 5 items on the Technical Architecture Checklist are fulfilled through fluid conversation, and `backend-architecture-spec.md` is approved by the user.
+## Git & Version Control Integration
+
+- **Spec Version Control**: Commit `backend-architecture-spec.md` to git root or `docs/specs/` using conventional commits (`docs(backend): create backend architecture specification`).
+- **Issue & Branch Alignment**: Link the spec to backend feature branches (`feat/backend-core`) and GitHub Issues (`Refs #123`).
+
+**Completion Criterion**: All 5 items on the Technical Architecture Checklist are fulfilled through fluid conversation, `backend-architecture-spec.md` is approved by the user, and committed to git.

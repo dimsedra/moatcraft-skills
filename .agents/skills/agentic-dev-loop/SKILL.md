@@ -78,6 +78,18 @@ Development requirements inevitably shift during real-world execution. The agent
 
 ---
 
+## End-to-End Git & Release Workflow Integration
+
+The entire agentic development loop operates natively over Git version control, feature branches, and Pull Requests:
+
+1. **Feature Branch Isolation**: Development work is isolated on dedicated feature branches (`git checkout -b feat/task-name`).
+2. **Version-Controlled Specs**: Discovery artifacts (`brand-product-alignment-spec.md`, `front-end-design-spec.md`, `backend-architecture-spec.md`, `progress-map.md`) are committed under `docs/` or repo root.
+3. **Atomic Red-Green Commits**: `implementation-tdd` produces explicit `test(...)` Red commits followed by `feat(...)` Green commits referencing GitHub Issues (`Closes #123`).
+4. **PR Audit & Review Gates**: `alignment-audit` and `code-review` evaluate `git diff origin/main...HEAD` before PR merge.
+5. **Merge & Milestone Closure**: Upon dual Clean Pass, `progress-map.md` is updated with commit SHAs (`[x] Sub-Task 1.1.1 (Commit: a1b2c3d)`), and the PR is approved for merge.
+
+---
+
 ## Loop Dynamics & Skill Responsibilities
 
 ### Phase 1: Brand & Product Alignment Layer

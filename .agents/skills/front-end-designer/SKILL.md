@@ -1,6 +1,6 @@
 ---
 name: front-end-designer
-description: Apply opinionated, brand-driven front-end design principles to materialize brand vibes into distinct UI feel, surface textures, tactile physics, typography, calculated whitespace control, and technical extensions (WebGL, Canvas, Shaders). Synthesize and maintain front-end-design-spec.md as the living visual source of truth. Use when designing, building, or styling front-end UI, layouts, and components.
+description: Apply opinionated, brand-driven front-end design principles to materialize brand vibes into distinct UI feel, surface textures, tactile physics, typography, calculated whitespace control, and technical extensions (WebGL, Canvas, Shaders). Synthesize and maintain front-end-design-spec.md as a version-controlled visual source of truth. Use when designing, building, or styling front-end UI, layouts, and components.
 ---
 
 # Front-End Designer (Opinionated Visual, Material & Spatial Strategy)
@@ -99,10 +99,18 @@ Build UI components adhering to `front-end-design-spec.md`:
 
 ---
 
-## 4. Completion Criteria
+## 4. Git & Version Control Integration
+
+- **Spec Version Control**: Commit `front-end-design-spec.md` to git root or `docs/specs/` (`docs(ui): create front-end design specification`).
+- **Feature Branch Isolation**: Isolate UI component and styling changes on dedicated feature branches (`feat/ui-design-moat`).
+- **Issue & PR Linkage**: Reference target GitHub Issues (`Closes #123`) in UI commits and PR descriptions.
+
+---
+
+## 5. Completion Criteria
 
 Execution is complete when all of the following conditions are met:
 1. `brand-product-alignment-spec.md` is ingested (or missing status acknowledged).
-2. `front-end-design-spec.md` is synthesized, presented, and approved by the user.
+2. `front-end-design-spec.md` is synthesized, presented, approved by the user, and committed to git.
 3. Opinionated font faces, generous spatial pacing tokens, and material CSS tokens are defined and loaded.
-4. Top-fold hero section and UI components embody the calculated whitespace control, brand material feel, and technical extensions without degrading WCAG accessibility or adding cognitive overhead.
+4. Top-fold hero section and UI components embody calculated whitespace control, brand material feel, and technical extensions without degrading WCAG accessibility or adding cognitive overhead.

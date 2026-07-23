@@ -1,6 +1,6 @@
 ---
 name: brand-product-alignment
-description: Conduct an interactive, probing brand & product discovery session to extract brand-product positioning, hard boundaries, anti-patterns, and experience moats. Use when defining, aligning, or locking down brand & product identity before front-end design or backend architecture.
+description: Conduct an interactive, probing brand & product discovery session to extract brand-product positioning, hard boundaries, anti-patterns, and experience moats. Synthesize brand-product-alignment-spec.md as a version-controlled specification. Use when defining, aligning, or locking down brand & product identity before front-end design or backend architecture.
 ---
 
 # Brand & Product Alignment (Fluid Discovery)
@@ -63,6 +63,11 @@ Once all 5 items on the checklist are checked off through natural conversation, 
 - **Core Capability Baseline**: ...
 ```
 
-Present the spec to the user for explicit sign-off to anchor downstream technical specifications (`front-end-designer` and `backend-architect`).
+---
 
-**Completion Criterion**: All 5 items on the Brand & Product Context Checklist are fulfilled through fluid conversation, and `brand-product-alignment-spec.md` is approved by the user.
+## Git & Version Control Integration
+
+- **Spec Version Control**: Commit `brand-product-alignment-spec.md` to git root or `docs/specs/` using conventional commits (`docs(brand): create brand and product alignment spec`).
+- **Issue Linkage**: Link the commit/spec to active GitHub Issues or project milestones (`Refs #123` / `Closes #45`).
+
+**Completion Criterion**: All 5 items on the Brand & Product Context Checklist are fulfilled through fluid conversation, `brand-product-alignment-spec.md` is approved by the user, and committed to git.
