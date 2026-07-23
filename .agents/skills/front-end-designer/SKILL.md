@@ -19,7 +19,7 @@ This skill governs front-end design execution and visual specification. Front-en
 - **Zero Usability Degradation**: Visual expression, surface textures, and brand materialization must **NEVER compromise functionality, high accessibility (WCAG AA/AAA contrast & keyboard navigation), or introduce cognitive overhead**.
 
 ### C. Brand Materialization & Surface Feel
-- **Moat via Inferred Brand Textures**: Infer surface materials (e.g. Liquid Glass, Matte Obsidian, Warm Paper Grain) and tactile physics directly from `brand-product-alignment-spec.md` to reinforce brand identity.
+- **Organic Material Inference (No Fixed Anchors)**: Analyze the brand vibe, emotional lens, and core boundaries in `brand-product-alignment-spec.md` to dynamically infer the appropriate surface materials, light behaviors, and tactile physics. Do NOT rely on pre-set material templates—explore textures uniquely tailored to the specific brand identity.
 - **Opinionated Typography**: Strictly ban generic, uninspired typography (plain Inter, Roboto, Arial, or default `system-ui` without customized kerning/stylistic sets). Curate deeply opinionated font pairings matching the brand's voice.
 
 ### D. Technical Extensions & Shader Moats
@@ -35,9 +35,9 @@ Before writing code, synthesize and maintain `front-end-design-spec.md` as the l
 # Front-End Design Specification: [System / Product Name]
 
 ## 1. Brand Material & Surface Feel Signature
-- **Inferred Brand Texture**: [e.g. Liquid Glass / Matte Obsidian / Warm Paper Grain]
-- **Surface Material Effects**: [Refraction, Blur, Sheen, Grain, Border Specular Highlights]
-- **Sensory & Tactile Physics**: [Spring dynamics, hover resistance, tactile click feedback]
+- **Inferred Brand Texture**: [Dynamically inferred surface material matching brand vibe]
+- **Surface Material Effects**: [Specular highlights, ambient blur, grain overlays, refraction, etc.]
+- **Sensory & Tactile Physics**: [Hover resistance, spring dynamics, tactile click feedback]
 
 ## 2. Opinionated Typography & Token Palette
 - **Display Font Signature**: [Display Font Name] (Weights, Stylistic Sets, Letter-Spacing)
@@ -46,7 +46,7 @@ Before writing code, synthesize and maintain `front-end-design-spec.md` as the l
 - **Color Token System**: Surface, Text, Accent, and High-Contrast Focus tokens
 
 ## 3. Technical Front-End Extensions & Shader Moat
-- **WebGL / Canvas Extensions**: [e.g. GLSL background liquid shader / Canvas particle grain]
+- **WebGL / Canvas Extensions**: [Bespoke GLSL shader layer, canvas effects, or 3D viewport]
 - **Physics & Scroll Dynamics**: [Physics engine, custom scroll triggers, cursor reactivity]
 - **Performance & Accessibility Isolation**: [How canvas layers are isolated from DOM accessibility]
 
@@ -66,7 +66,7 @@ Before writing code, synthesize and maintain `front-end-design-spec.md` as the l
 ### Step 1: Context & Brand Texture Ingestion
 Read `brand-product-alignment-spec.md` (or user prompt constraints). Extract:
 - Core brand vibe & target 3-second emotion
-- Inferred visual textures & surface materials
+- Dynamically inferred visual textures & surface materials matching the brand context
 - Candidate front-end technical extensions (WebGL, Canvas, physics)
 - Blacklisted visual clichés to avoid
 
