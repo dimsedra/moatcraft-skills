@@ -1,9 +1,9 @@
 ---
 name: front-end-designer
-description: Apply opinionated, brand-driven front-end design principles to materialize brand vibes into distinct UI feel, surface textures, tactile physics, and typography. Synthesize and maintain front-end-design-spec.md as the living visual source of truth. Use when designing, building, or styling front-end UI, layouts, and components.
+description: Apply opinionated, brand-driven front-end design principles to materialize brand vibes into distinct UI feel, surface textures, tactile physics, typography, and technical extensions (WebGL, Canvas, Physics Shaders). Synthesize and maintain front-end-design-spec.md as the living visual source of truth. Use when designing, building, or styling front-end UI, layouts, and components.
 ---
 
-# Front-End Designer (Opinionated Visual & Material Strategy)
+# Front-End Designer (Opinionated Visual, Material & Technical Extension Strategy)
 
 This skill governs front-end design execution and visual specification. Front-end design is iterative and dynamic—therefore, this skill produces and maintains **`front-end-design-spec.md`** as the living **Visual Source of Truth** before and during component implementation.
 
@@ -28,26 +28,30 @@ Before executing design work, check for the existence of `brand-product-alignmen
      - *Example 1 (Fluid/Precision Brand)*: Infer **Liquid Glass textures**, dynamic light refraction, subtle chromatic sheen, and fluid spring physics.
      - *Example 2 (Tactile Monolith Brand)*: Infer **Matte Obsidian depth**, brushed metallic borders, heavy tactile resistance, and subtle grain overlays.
      - *Example 3 (Editorial Craft Brand)*: Infer **Paper-grain warmth**, high-contrast editorial typography, and ink-bleed hover accents.
-4. **Non-Generic, Opinionated Typography**:
+4. **Leverage Technical Front-End Extensions (WebGL, Canvas, Shaders, Physics Engines)**:
+   - **Uncopyable Technical Moat**: Incorporate custom front-end technical extensions (such as WebGL canvas viewports, custom GLSL fragment shaders, physics micro-interaction engines, or custom scroll dynamics) to build a technical and visual moat that off-the-shelf component libraries cannot replicate.
+   - **Performance & Accessibility Isolation**: Render heavy visual shaders or canvas effects on dedicated background layers or WebGL canvases, keeping DOM elements accessible, semantic, and performant.
+5. **Non-Generic, Opinionated Typography**:
    - Strictly ban generic, uninspired typography (plain Inter, Roboto, Arial, or default `system-ui` without customized kerning/stylistic sets).
    - Curate deeply opinionated font pairings (e.g., editorial display typefaces, distinct serif/geometric hybrids) matching the brand's voice.
-5. **Breathable Hierarchy & Low Cognitive Overhead**: Pace information visually. Grant every distinct content block generous, deliberate whitespace. Present one primary focal point per viewport to guide attention effortlessly without visual noise.
-6. **Sticky First Impression**: Engage the user within the first 3 seconds. The top fold must immediately project the brand's core lens and vibe, establishing visual authority before the user scrolls.
+6. **Breathable Hierarchy & Low Cognitive Overhead**: Pace information visually. Grant every distinct content block generous, deliberate whitespace. Present one primary focal point per viewport to guide attention effortlessly without visual noise.
+7. **Sticky First Impression**: Engage the user within the first 3 seconds. The top fold must immediately project the brand's core lens and vibe, establishing visual authority before the user scrolls.
 
 ---
 
 ## Execution Steps
 
-### Step 1: Context & Brand Texture Ingestion
+### Step 1: Context, Brand Texture & Extension Ingestion
 Read `brand-product-alignment-spec.md` (or user prompt constraints). Extract:
 - Core brand vibe & target 3-second emotion
 - Inferred visual textures & surface materials (e.g. liquid glass, matte obsidian, warm paper grain, neon refraction)
+- Candidate front-end technical extensions (WebGL shaders, Canvas effects, physics engines)
 - Blacklisted visual clichés to avoid
 
-**Completion Criterion**: 3+ brand signatures and inferred surface material textures are loaded before writing code.
+**Completion Criterion**: 3+ brand signatures, surface materials, and planned technical extensions are loaded before writing code.
 
 ### Step 2: Synthesis of `front-end-design-spec.md` (Visual Source of Truth)
-Synthesize the visual and material specification into `front-end-design-spec.md`:
+Synthesize the visual, material, and extension specification into `front-end-design-spec.md`:
 
 ```markdown
 # Front-End Design Specification: [System / Product Name]
@@ -57,36 +61,42 @@ Synthesize the visual and material specification into `front-end-design-spec.md`
 - **Surface Material Effects**: [Refraction, Blur, Sheen, Grain, Border Specular Highlights]
 - **Sensory & Tactile Physics**: [Spring dynamics, hover resistance, tactile click feedback]
 
-## 2. Typography & Token Palette
+## 2. Technical Front-End Extensions & Shader Moat
+- **WebGL / Canvas Extensions**: [e.g. GLSL background liquid shader / Canvas particle grain]
+- **Physics & Scroll Dynamics**: [Physics engine, custom scroll triggers, cursor reactivity]
+- **Performance & Accessibility Isolation**: [How canvas layers are isolated from DOM accessibility]
+
+## 3. Typography & Token Palette
 - **Display Font Signature**: [Display Font Name] (Weights, Stylistic Sets, Letter-Spacing)
 - **Body Font Signature**: [Body Font Name] (Line-Height Ratio, Kerning)
 - **Banned Fonts**: Inter, Roboto, Arial, Default System UI (unless customized)
 - **Color Token System**: Surface, Text, Accent, and High-Contrast Focus tokens
 
-## 3. Form-Function Equilibrium & Accessibility Contract
+## 4. Form-Function Equilibrium & Accessibility Contract
 - **High Accessibility Baseline**: WCAG AA/AAA contrast targets and keyboard focus indicators
 - **Low Cognitive Overhead**: Clean component boundaries and zero clutter
 - **Component Texture Materialization**: How buttons, cards, and inputs wear the brand material without sacrificing clarity
 
-## 4. Top-Fold 3-Second First Impression Plan
-- **Primary Focal Point**: Hero focal element and immediate brand material projection
+## 5. Top-Fold 3-Second First Impression Plan
+- **Primary Focal Point**: Hero focal element, technical shader layer, and immediate brand material projection
 ```
 
 Present `front-end-design-spec.md` to the user for sign-off.
 
 **Completion Criterion**: `front-end-design-spec.md` is written, presented, and approved as the living visual source of truth.
 
-### Step 3: Token Framing & Material CSS Setup
-Translate `front-end-design-spec.md` into CSS variables / tokens in `index.css` or system styling files:
-- Load the curated, opinionated Web Fonts via Google Fonts / `@font-face`.
+### Step 3: Token Framing & Extension Setup
+Translate `front-end-design-spec.md` into CSS variables / tokens and extension initializers in `index.css` or system styling files:
+- Load opinionated Web Fonts via Google Fonts / `@font-face`.
 - Define spacing tokens, material texture classes (backdrop filters, specular borders, grain overlays), and physics transition timing functions.
+- Initialize technical front-end extension canvases or shader pipelines on isolated background layers.
 
-**Completion Criterion**: CSS tokens, material texture utilities, and opinionated font faces are loaded and verified functional.
+**Completion Criterion**: CSS tokens, material texture utilities, opinionated font faces, and extension canvas pipelines are loaded and verified functional.
 
 ### Step 4: Component Assembly & Material Polish
 Build UI components adhering to `front-end-design-spec.md`:
-- Construct top-fold hero section for sticky 3-second impression.
+- Construct top-fold hero section integrating the primary focal element and background technical extensions.
 - Apply brand material textures (e.g. liquid glass sheen) while enforcing high accessibility and low cognitive load.
-- Refine hover physics and state transitions.
+- Refine hover physics, micro-interactions, and state transitions.
 
-**Completion Criterion**: All UI components are structured semantically, pass accessibility checks, embody the brand's material feel, and `front-end-design-spec.md` is updated.
+**Completion Criterion**: All UI components are structured semantically, pass accessibility checks, embody the brand's material feel, leverage technical extensions, and `front-end-design-spec.md` is updated.
