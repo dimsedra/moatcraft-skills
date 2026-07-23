@@ -19,7 +19,7 @@ npx skills add dimsedra/moatcraft-skills
 
 ### Install Specific Skill
 ```bash
-npx skills add dimsedra/moatcraft-skills@brand-product-alignment
+npx skills add dimsedra/moatcraft-skills@moatcraft-onboarding
 ```
 
 ---
@@ -28,6 +28,10 @@ npx skills add dimsedra/moatcraft-skills@brand-product-alignment
 
 ```mermaid
 flowchart TD
+    subgraph Layer0 ["0. Onboarding & Alignment"]
+        ONB["moatcraft-onboarding<br/><i>(Onboarding & Working Contract)</i>"]
+    end
+
     subgraph Layer1 ["1. Brand Strategy"]
         A["brand-product-alignment<br/><i>(Brand & Product Identity)</i>"]
     end
@@ -50,6 +54,7 @@ flowchart TD
     SHIP["Ship / Next Iteration"]
 
     %% Primary Downstream Flow
+    ONB --> A
     A --> B1
     A --> B2
     B1 --> MAP
@@ -63,7 +68,7 @@ flowchart TD
     REVIEW -- "Quality Breaches Found" --> TDD
     REVIEW -- "Clean Pass" --> SHIP
 
-    %% Mid-Flight Cascade Re-audit (Brand Shift -> Front-End & Back-End -> Progress Mapper)
+    %% Mid-Flight Cascade Re-audit
     A -. "Brand Shift (Re-audit Specs)" .-> B1
     A -. "Brand Shift (Re-audit Specs)" .-> B2
     B1 -. "Visual Shift (Refine Tasks)" .-> MAP
@@ -79,6 +84,7 @@ flowchart TD
 
 | Skill | Category | Description | Primary Output Artifact |
 | :--- | :--- | :--- | :--- |
+| **`moatcraft-onboarding`** | Onboarding | Explains skill suite rationale, demystifies blackbox workflows, and generates living working contract. | `moatcraft-contract.md` |
 | **`brand-product-alignment`** | Strategy | Conducts fluid brand and product discovery to define positioning, identity boundaries, and experience moats. | `brand-product-alignment-spec.md` |
 | **`front-end-designer`** | Front-End | Applies opinionated UI rules, breathable visual hierarchy, 2nd/3rd idea iteration, and universal component moats. | `front-end-design-spec.md` |
 | **`backend-architect`** | Back-End | Conducts natural, jargon-free backend discovery for data flow, operational limits, SLAs, and technical moats. | `backend-architecture-spec.md` |

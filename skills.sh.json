@@ -3,6 +3,13 @@
   "notGrouped": "bottom",
   "groupings": [
     {
+      "title": "Onboarding & Working Contract",
+      "description": "Interactive onboarding, skill rationale, and working contract generation.",
+      "skills": [
+        "moatcraft-onboarding"
+      ]
+    },
+    {
       "title": "Strategy & Discovery",
       "description": "Fluid brand, product identity, and architectural discovery skills.",
       "skills": [

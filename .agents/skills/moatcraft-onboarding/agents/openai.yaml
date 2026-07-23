@@ -1,0 +1,5 @@
+interface:
+  display_name: "Moatcraft Onboarding & Working Contract"
+  short_description: "Onboard new users, explain skill suite rationale, and generate working contract artifact."
+policy:
+  allow_implicit_invocation: true
