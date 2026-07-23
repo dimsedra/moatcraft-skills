@@ -48,10 +48,13 @@ flowchart TD
     REVIEW -- "Quality Breaches Found" --> TDD
     REVIEW -- "Clean Pass" --> SHIP
 
-    %% Upstream Cascade & Escalation
-    A -. "Brand Shift (Cascade Re-audit)" .-> MAP
-    B1 -. "UI Spec Shift" .-> MAP
-    B2 -. "Backend Spec Shift" .-> MAP
+    %% Mid-Flight Cascade Re-audit (Brand Shift -> Front-End & Back-End -> Progress Mapper)
+    A -. "Brand Shift (Re-audit Specs)" .-> B1
+    A -. "Brand Shift (Re-audit Specs)" .-> B2
+    B1 -. "Visual Shift (Refine Tasks)" .-> MAP
+    B2 -. "Backend Shift (Refine Tasks)" .-> MAP
+
+    %% Bottom-Up Strategic Escalation
     TDD -. "Strategic Contradiction (Escalate Upstream)" .-> A
 ```
 
@@ -62,7 +65,7 @@ flowchart TD
 Development requirements inevitably shift during real-world execution. The agent must handle bi-directional upstream flow:
 
 ### 1. Downstream Cascade Re-Audit (Top-Down Shift)
-- **Brand/Product Shift**: If `brand-product-alignment-spec.md` is updated mid-flight, downstream dependent specs (`front-end-design-spec.md`, `backend-architecture-spec.md`) and `progress-map.md` are automatically flagged for a **Cascade Re-Audit**.
+- **Brand/Product Shift**: If `brand-product-alignment-spec.md` is updated mid-flight, downstream dependent specs (`front-end-design-spec.md`, `backend-architecture-spec.md`) are automatically flagged for a **Cascade Re-Audit**. Once the technical specs are updated, `progress-mapper` is invoked to refine `progress-map.md`.
 - **Backend/Front-End Spec Shift**: If `backend-architecture-spec.md` or `front-end-design-spec.md` is modified, `progress-mapper` automatically re-audits `progress-map.md` to update dependent tasks/sub-tasks.
 
 ### 2. Upstream Strategic Escalation (Bottom-Up Escalation)

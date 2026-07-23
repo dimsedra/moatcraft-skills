@@ -63,10 +63,13 @@ flowchart TD
     REVIEW -- "Quality Breaches Found" --> TDD
     REVIEW -- "Clean Pass" --> SHIP
 
-    %% Upstream Cascade & Escalation
-    A -. "Brand Shift (Cascade Re-audit)" .-> MAP
-    B1 -. "UI Spec Shift" .-> MAP
-    B2 -. "Backend Spec Shift" .-> MAP
+    %% Mid-Flight Cascade Re-audit (Brand Shift -> Front-End & Back-End -> Progress Mapper)
+    A -. "Brand Shift (Re-audit Specs)" .-> B1
+    A -. "Brand Shift (Re-audit Specs)" .-> B2
+    B1 -. "Visual Shift (Refine Tasks)" .-> MAP
+    B2 -. "Backend Shift (Refine Tasks)" .-> MAP
+
+    %% Bottom-Up Strategic Escalation
     TDD -. "Strategic Contradiction (Escalate Upstream)" .-> A
 ```
 
