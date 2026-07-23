@@ -21,6 +21,22 @@ The progress mapper adapts dynamically based on the active strategy route:
 
 ---
 
+## Living Roadmap Protocol (Constant Refinement & Reopening Rules)
+
+The progress map is **a living document, not a rigid script**. Real-world engineering requires constant adaptation:
+
+1. **Continuous Refinement**: Tasks and sub-tasks can be refined, split, added, or re-prioritized at any point as new technical or product insights emerge during development.
+2. **Phase & Task Reopening**: If an audit finding (`alignment-audit`), code review flaw (`code-review`), or product shift reveals a gap in a previously completed milestone, **the item can be reopened**:
+   - Change completed status `[x]` back to `[ ]` (e.g. `[ ] Sub-Task 1.1.2 [Reopened: Discovered concurrent state bug]`).
+   - Inject corrective atomic sub-tasks into `progress-map.md`.
+   - Re-route the reopened sub-tasks into `implementation-tdd` to ensure full test coverage and audit compliance before re-closing.
+3. **Refinement Triggers**:
+   - *Audit / Review Findings*: Gaps or scope deviations identified downstream.
+   - *Technical Discovery*: Unexpected edge cases or API constraints discovered during the Red-Green TDD phase.
+   - *Product Evolution*: Updated brand, UI, or backend architecture requirements.
+
+---
+
 ## Execution Steps
 
 ### Step 1: Specification Ingestion (Main Agent Responsibility)
@@ -69,13 +85,14 @@ Synthesize the roadmap into `progress-map.md` at the project root:
 
 Present `progress-map.md` to the user for confirmation.
 
-**Completion Criterion**: `progress-map.md` is generated, presented, and locked.
+**Completion Criterion**: `progress-map.md` is generated, presented, and locked for the initial iteration.
 
-### Step 4: Dynamic Progress Tracking & Loop Integration
+### Step 4: Dynamic Progress Tracking & Refinement Loop
 As development proceeds through the active loop:
 1. Select the next pending atomic sub-task from `progress-map.md`.
 2. Execute via `implementation-tdd` (Red ➔ Green).
 3. Verify via `alignment-audit` and `code-review`.
-4. Upon **Clean Pass**, update `progress-map.md` by checking off `[x]` the completed sub-task and advancing the completion percentage.
+4. Upon **Clean Pass**, update `progress-map.md` by checking off `[x]` the completed sub-task.
+5. If issues arise or specs evolve, apply the **Living Roadmap Protocol** to refine tasks or reopen completed phases.
 
-**Completion Criterion**: `progress-map.md` remains updated as the living source of truth throughout the development loop.
+**Completion Criterion**: `progress-map.md` remains updated and refined as the living source of truth throughout the development loop.
