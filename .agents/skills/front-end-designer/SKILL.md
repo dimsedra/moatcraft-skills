@@ -1,9 +1,9 @@
 ---
 name: front-end-designer
-description: Apply opinionated, brand-driven front-end design principles to create web interfaces with universal design moats across typography, components, breathable hierarchy, and interactive signatures. Synthesize and maintain front-end-design-spec.md as the living visual source of truth. Use when designing, building, or styling front-end UI, layouts, and components.
+description: Apply opinionated, brand-driven front-end design principles to materialize brand vibes into distinct UI feel, surface textures, tactile physics, and typography. Synthesize and maintain front-end-design-spec.md as the living visual source of truth. Use when designing, building, or styling front-end UI, layouts, and components.
 ---
 
-# Front-End Designer (Opinionated Visual & Component Strategy)
+# Front-End Designer (Opinionated Visual & Material Strategy)
 
 This skill governs front-end design execution and visual specification. Front-end design is iterative and dynamic—therefore, this skill produces and maintains **`front-end-design-spec.md`** as the living **Visual Source of Truth** before and during component implementation.
 
@@ -20,67 +20,72 @@ Before executing design work, check for the existence of `brand-product-alignmen
 
 ## Core Design Principles
 
-1. **Natural Collaboration**: Chat naturally like two designers at a studio whiteboard. Explore visual directions, token pairings, and layout dynamics collaboratively.
+1. **Natural Collaboration**: Chat naturally like two designers at a studio whiteboard. Explore visual directions, material textures, and layout dynamics collaboratively.
 2. **Happy-Path Rejection (2nd & 3rd Idea Rule)**: Treat the 1st design idea as the path of least resistance—a generic commodity solution 90% of competitors use. Reject it. Iterate directly to 2nd and 3rd iterations to unlock unique, brand-anchored concepts.
-3. **Universal Design Moat (Component-Wide Uncopyability)**: A design moat is NOT limited to WebGL or Canvas shaders. **Every single UI element must feature a distinct design moat**:
-   - **Typography Moat**: Strictly ban generic, uninspired typography (plain Inter, Roboto, Arial, browser system defaults). Curate deeply opinionated font pairings (e.g., editorial display typefaces, distinct serif/geometric hybrids, custom tracking/kerning scales).
-   - **Component Geometry Moat**: Custom card shapes, asymmetric borders, distinct elevation layers, and bespoke container geometry instead of stock rounded rectangles (`rounded-md shadow-md`).
-   - **Interaction & Physics Moat**: Custom micro-interactions, tactile hover physics, cursor reactivity, state transitions, and custom scroll dynamics.
-4. **Breathable Hierarchy & Low Cognitive Load**: Pace information visually. Grant every distinct content block generous, deliberate whitespace. Present one primary focal point per viewport to guide attention effortlessly.
-5. **Sticky First Impression**: Engage the user within the first 3 seconds. The top fold must immediately project the brand's core lens and vibe, establishing visual authority before the user scrolls.
-6. **Form & Function Equilibrium**: Balance visual expression with strict utility. Maintain clear interactive affordances, high contrast ratios, and intuitive user flows. Never degrade usability for aesthetic novelty.
+3. **Respect Standards, Infer Brand-Driven Feel & Textures**:
+   - **UI Standards exist for a reason**: Standard layouts, clear component boundaries, and intuitive navigation provide baseline usability and accessibility. Do NOT break established usability conventions just for aesthetic novelty.
+   - **Moat via Brand-Derived Feel & Materials**: The design moat comes from the **sensory feel, visual textures, surface materials, and tactile physics** inferred directly from `brand-product-alignment-spec.md` to reinforce the brand identity:
+     - *Example 1 (Fluid/Precision Brand)*: Infer **Liquid Glass textures**, dynamic light refraction, subtle chromatic sheen, and fluid spring physics.
+     - *Example 2 (Tactile Monolith Brand)*: Infer **Matte Obsidian depth**, brushed metallic borders, heavy tactile resistance, and subtle grain overlays.
+     - *Example 3 (Editorial Craft Brand)*: Infer **Paper-grain warmth**, high-contrast editorial typography, and ink-bleed hover accents.
+4. **Non-Generic, Opinionated Typography**:
+   - Strictly ban generic, uninspired typography (plain Inter, Roboto, Arial, or default `system-ui` without customized kerning/stylistic sets).
+   - Curate deeply opinionated font pairings (e.g., editorial display typefaces, distinct serif/geometric hybrids) matching the brand's voice.
+5. **Breathable Hierarchy & Low Cognitive Load**: Pace information visually. Grant every distinct content block generous, deliberate whitespace. Present one primary focal point per viewport to guide attention effortlessly.
+6. **Sticky First Impression**: Engage the user within the first 3 seconds. The top fold must immediately project the brand's core lens and vibe, establishing visual authority before the user scrolls.
 
 ---
 
 ## Execution Steps
 
-### Step 1: Context & Visual Boundary Ingestion
+### Step 1: Context & Brand Texture Ingestion
 Read `brand-product-alignment-spec.md` (or user prompt constraints). Extract:
 - Core brand vibe & target 3-second emotion
-- Blacklisted visual clichés and commodity tropes to avoid
-- Brand experience moat strategy
+- Inferred visual textures & surface materials (e.g. liquid glass, matte obsidian, warm paper grain, neon refraction)
+- Blacklisted visual clichés to avoid
 
-**Completion Criterion**: 3+ required visual brand signatures and 3+ banned visual clichés are loaded.
+**Completion Criterion**: 3+ brand signatures and inferred surface material textures are loaded before writing code.
 
 ### Step 2: Synthesis of `front-end-design-spec.md` (Visual Source of Truth)
-Before writing code, synthesize the visual specification into `front-end-design-spec.md`:
+Synthesize the visual and material specification into `front-end-design-spec.md`:
 
 ```markdown
 # Front-End Design Specification: [System / Product Name]
 
-## 1. Typography & Token Palette (Opinionated Moat)
+## 1. Brand Material & Feel Signature (The Surface Moat)
+- **Inferred Brand Texture**: [e.g. Liquid Glass / Matte Obsidian / Warm Paper Grain]
+- **Surface Material Effects**: [Refraction, Blur, Sheen, Grain, Border Specular Highlights]
+- **Sensory & Tactile Physics**: [Spring dynamics, hover resistance, tactile click feedback]
+
+## 2. Typography & Token Palette
 - **Display Font Signature**: [Display Font Name] (Weights, Stylistic Sets, Letter-Spacing)
 - **Body Font Signature**: [Body Font Name] (Line-Height Ratio, Kerning)
 - **Banned Fonts**: Inter, Roboto, Arial, Default System UI (unless customized)
 - **Color Token System**: Surface, Text, Accent, and High-Contrast Focus tokens
 
-## 2. Component Geometry & Layout Hierarchy
-- **Breathable Grid & Spacing**: Padding scales, container bounds, section gaps
-- **Component Geometry Moats**: Custom card structures, asymmetric borders, bespoke elevation layers
-
-## 3. Interactive Physics & Micro-Moats
-- **Hover & Focus States**: Tactile physics, micro-animations, cursor feedback
-- **Technical Visual Moats**: WebGL/Canvas shaders, custom scroll dynamics (if applicable)
+## 3. Standard Component Integration & Materialization
+- **Usability Baseline**: Respect standard UI layout patterns for intuitive navigation
+- **Component Texture Materialization**: How buttons, cards, and inputs wear the brand material
 
 ## 4. Top-Fold 3-Second First Impression Plan
-- **Primary Focal Point**: Hero focal element and immediate brand projection
+- **Primary Focal Point**: Hero focal element and immediate brand material projection
 ```
 
 Present `front-end-design-spec.md` to the user for sign-off.
 
 **Completion Criterion**: `front-end-design-spec.md` is written, presented, and approved as the living visual source of truth.
 
-### Step 3: Token Framing & System CSS Setup
+### Step 3: Token Framing & Material CSS Setup
 Translate `front-end-design-spec.md` into CSS variables / tokens in `index.css` or system styling files:
 - Load the curated, opinionated Web Fonts via Google Fonts / `@font-face`.
-- Define spacing tokens, typography scales, color surfaces, and transition timing functions.
+- Define spacing tokens, material texture classes (backdrop filters, specular borders, grain overlays), and physics transition timing functions.
 
-**Completion Criterion**: CSS tokens and opinionated font faces are loaded and verified functional.
+**Completion Criterion**: CSS tokens, material texture utilities, and opinionated font faces are loaded and verified functional.
 
-### Step 4: Component Assembly & Interactive Polish
+### Step 4: Component Assembly & Material Polish
 Build UI components adhering to `front-end-design-spec.md`:
 - Construct top-fold hero section for sticky 3-second impression.
-- Apply universal component moats to cards, buttons, navigation, and inputs.
-- Implement micro-interaction physics and custom interactive states.
+- Apply brand material textures (e.g. liquid glass sheen) to standard component boundaries without breaking usability.
+- Refine hover physics and state transitions.
 
-**Completion Criterion**: All UI components are structured semantically, pass accessibility checks, reflect the universal design moat, and `front-end-design-spec.md` is updated to reflect any component refinements.
+**Completion Criterion**: All UI components are structured semantically, pass accessibility checks, embody the brand's material feel, and `front-end-design-spec.md` is updated.
