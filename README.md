@@ -2,6 +2,8 @@
 
 > **Opinionated Agentic Skills for Crafting Defensible Software and Architectural Moats**
 
+[![skills.sh](https://skills.sh/b/dimsedra/moatcraft-skills)](https://skills.sh/dimsedra/moatcraft-skills)
+
 Moatcraft is a suite of production-grade agent skills designed to guide AI coding assistants through a continuous development loop. It eliminates commodity UI templates, generic happy-path solutions, and sycophantic behavior, focusing instead on building defensible design moats, resilient backend architectures, and artifact-driven TDD execution.
 
 ---

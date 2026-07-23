@@ -1,0 +1,39 @@
+{
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "notGrouped": "bottom",
+  "groupings": [
+    {
+      "title": "Strategy & Discovery",
+      "description": "Fluid brand, product identity, and architectural discovery skills.",
+      "skills": [
+        "brand-product-alignment",
+        "front-end-designer",
+        "backend-architect"
+      ]
+    },
+    {
+      "title": "Roadmap & Tracking",
+      "description": "Dynamic progress map and living task tracker.",
+      "skills": [
+        "progress-mapper"
+      ]
+    },
+    {
+      "title": "Active Development Loop",
+      "description": "Artifact-driven TDD, upstream spec auditing, and parallel code review.",
+      "skills": [
+        "implementation-tdd",
+        "alignment-audit",
+        "code-review",
+        "agentic-dev-loop"
+      ]
+    },
+    {
+      "title": "Systemic Learning",
+      "description": "Adaptive, systemic explanations of technical trade-offs.",
+      "skills": [
+        "explain-and-teach"
+      ]
+    }
+  ]
+}
