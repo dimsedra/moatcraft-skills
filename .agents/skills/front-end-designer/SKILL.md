@@ -1,9 +1,9 @@
 ---
 name: front-end-designer
-description: Apply opinionated, brand-driven front-end design principles to materialize brand vibes into distinct UI feel, surface textures, tactile physics, typography, and technical extensions (WebGL, Canvas, Shaders). Synthesize and maintain front-end-design-spec.md as the living visual source of truth. Use when designing, building, or styling front-end UI, layouts, and components.
+description: Apply opinionated, brand-driven front-end design principles to materialize brand vibes into distinct UI feel, surface textures, tactile physics, typography, calculated whitespace control, and technical extensions (WebGL, Canvas, Shaders). Synthesize and maintain front-end-design-spec.md as the living visual source of truth. Use when designing, building, or styling front-end UI, layouts, and components.
 ---
 
-# Front-End Designer (Opinionated Visual & Material Strategy)
+# Front-End Designer (Opinionated Visual, Material & Spatial Strategy)
 
 This skill governs front-end design execution and visual specification. Front-end design is iterative and dynamic—therefore, this skill produces and maintains **`front-end-design-spec.md`** as the living **Visual Source of Truth** before and during component implementation.
 
@@ -18,11 +18,16 @@ This skill governs front-end design execution and visual specification. Front-en
 ### B. Form-Function Equilibrium & High Accessibility
 - **Zero Usability Degradation**: Visual expression, surface textures, and brand materialization must **NEVER compromise functionality, high accessibility (WCAG AA/AAA contrast & keyboard navigation), or introduce cognitive overhead**.
 
-### C. Brand Materialization & Surface Feel
+### C. Calculated Whitespace & Information Flow Control (Negative Space Pacing)
+- **Whitespace as Active Information Control**: Whitespace (negative space) is NOT passive empty area; it is **an active instrument of power to control how viewers consume, process, and understand information**.
+- **Complete Command of Visual Rhythm**: Use calculated spatial pacing to dictate the exact order, speed, and rhythm of viewer comprehension. Isolate one primary focal point per viewport to eliminate cognitive fatigue and guarantee total command over information assimilation.
+- **Generous Spatial Breathing**: Enforce generous, deliberate vertical and horizontal breathing margins between content blocks so ideas are absorbed sequentially rather than simultaneously.
+
+### D. Brand Materialization & Surface Feel
 - **Organic Material Inference (No Fixed Anchors)**: Analyze the brand vibe, emotional lens, and core boundaries in `brand-product-alignment-spec.md` to dynamically infer the appropriate surface materials, light behaviors, and tactile physics. Do NOT rely on pre-set material templates—explore textures uniquely tailored to the specific brand identity.
 - **Opinionated Typography**: Strictly ban generic, uninspired typography (plain Inter, Roboto, Arial, or default `system-ui` without customized kerning/stylistic sets). Curate deeply opinionated font pairings matching the brand's voice.
 
-### D. Technical Extensions & Shader Moats
+### E. Technical Extensions & Shader Moats
 - **Uncopyable Technical Moat**: Leverage custom front-end technical extensions (WebGL, Canvas GLSL shaders, physics engines, custom scroll dynamics) on isolated background layers to build technical signatures that off-the-shelf component libraries cannot replicate.
 
 ---
@@ -37,25 +42,30 @@ Before writing code, synthesize and maintain `front-end-design-spec.md` as the l
 ## 1. Brand Material & Surface Feel Signature
 - **Inferred Brand Texture**: [Dynamically inferred surface material matching brand vibe]
 - **Surface Material Effects**: [Specular highlights, ambient blur, grain overlays, refraction, etc.]
-- **Sensory & Tactile Physics**: [Hover resistance, spring dynamics, tactile click feedback]
+- **Sensory & Tactile Physics**: [Spring dynamics, hover resistance, tactile click feedback]
 
-## 2. Opinionated Typography & Token Palette
+## 2. Calculated Spatial Pacing & Information Flow Control
+- **Spatial Rhythm & Breathing Scale**: [Deliberate section padding scales, container max-widths, and grid gaps]
+- **Focal Isolation Strategy**: [One primary focal point per viewport plan to dictate viewer comprehension speed]
+- **Cognitive Assimilation Controls**: [Visual grouping, hierarchy breaks, and negative space boundaries]
+
+## 3. Opinionated Typography & Token Palette
 - **Display Font Signature**: [Display Font Name] (Weights, Stylistic Sets, Letter-Spacing)
 - **Body Font Signature**: [Body Font Name] (Line-Height Ratio, Kerning)
 - **Banned Fonts**: Inter, Roboto, Arial, Default System UI (unless customized)
 - **Color Token System**: Surface, Text, Accent, and High-Contrast Focus tokens
 
-## 3. Technical Front-End Extensions & Shader Moat
+## 4. Technical Front-End Extensions & Shader Moat
 - **WebGL / Canvas Extensions**: [Bespoke GLSL shader layer, canvas effects, or 3D viewport]
 - **Physics & Scroll Dynamics**: [Physics engine, custom scroll triggers, cursor reactivity]
 - **Performance & Accessibility Isolation**: [How canvas layers are isolated from DOM accessibility]
 
-## 4. Form-Function Equilibrium & Accessibility Contract
+## 5. Form-Function Equilibrium & Accessibility Contract
 - **High Accessibility Baseline**: WCAG AA/AAA contrast targets and keyboard focus indicators
 - **Low Cognitive Overhead**: Clean component boundaries and zero clutter
 - **Component Texture Materialization**: How buttons, cards, and inputs wear the brand material without sacrificing clarity
 
-## 5. Top-Fold 3-Second First Impression Plan
+## 6. Top-Fold 3-Second First Impression Plan
 - **Primary Focal Point**: Hero focal element, technical shader layer, and immediate brand material projection
 ```
 
@@ -67,6 +77,7 @@ Before writing code, synthesize and maintain `front-end-design-spec.md` as the l
 Read `brand-product-alignment-spec.md` (or user prompt constraints). Extract:
 - Core brand vibe & target 3-second emotion
 - Dynamically inferred visual textures & surface materials matching the brand context
+- Spatial pacing requirements and information consumption goals
 - Candidate front-end technical extensions (WebGL, Canvas, physics)
 - Blacklisted visual clichés to avoid
 
@@ -76,12 +87,13 @@ Synthesize findings into `front-end-design-spec.md` and present to the user for 
 ### Step 3: Token Framing & System CSS Setup
 Translate the spec into CSS variables and tokens in `index.css` or system styling files:
 - Load opinionated Web Fonts via Google Fonts / `@font-face`.
-- Define spacing tokens, material texture classes, and physics transition timing functions.
+- Define spacing tokens (generous vertical/horizontal margins), material texture classes, and physics transition timing functions.
 - Initialize technical front-end extension canvases on isolated background layers.
 
-### Step 4: Component Assembly & Material Polish
+### Step 4: Component Assembly & Spatial Polish
 Build UI components adhering to `front-end-design-spec.md`:
-- Construct top-fold hero section for sticky 3-second impression.
+- Construct top-fold hero section for sticky 3-second impression and immediate focal control.
+- Apply calculated whitespace pacing to dictate viewer information flow and prevent cognitive clutter.
 - Apply brand material textures while enforcing high accessibility and low cognitive load.
 - Refine hover physics, micro-interactions, and state transitions.
 
@@ -92,5 +104,5 @@ Build UI components adhering to `front-end-design-spec.md`:
 Execution is complete when all of the following conditions are met:
 1. `brand-product-alignment-spec.md` is ingested (or missing status acknowledged).
 2. `front-end-design-spec.md` is synthesized, presented, and approved by the user.
-3. Opinionated font faces and material CSS tokens are defined and loaded.
-4. Top-fold hero section and UI components embody the brand material feel and technical extensions without degrading WCAG accessibility or adding cognitive overhead.
+3. Opinionated font faces, generous spatial pacing tokens, and material CSS tokens are defined and loaded.
+4. Top-fold hero section and UI components embody the calculated whitespace control, brand material feel, and technical extensions without degrading WCAG accessibility or adding cognitive overhead.
