@@ -5,182 +5,131 @@ description: Conduct a product-aware, two-axis code review (Standards and Spec) 
 
 # Code Review (Product-Aware Two-Axis Review)
 
-This skill performs a rigorous code review focusing on **code quality**, **edge-case robustness**, and **domain correctness** for feature branches and Pull Requests (PRs). Findings are strictly formatted by **Urgency & Importance Level** and include an explicit **"WHY" (Systemic Rationale & Consequence)** for every issue detected.
+This skill performs a product-aware, dual-axis code review evaluating **Code Quality & Robustness** alongside **Spec & Domain Alignment** for feature branches and Pull Requests. 
 
-Because sub-agents start with a blank context window, the main agent synthesizes a **5-Layer Context Chain** before spawning parallel sub-agents to evaluate the diff across **Standards** and **Spec** axes.
-
----
-
-## Workflow Sequence
-
-`alignment-audit` ➔ `code-review` ➔ `PR Approval / Merge`
-
-> **Upstream Dependency:** Run the `alignment-audit` skill prior to `code-review` to confirm that all changes match approved plans and PRDs without scope creep. Once plan alignment is verified, execute `code-review` to evaluate code quality, edge-case robustness, and standards.
+Findings are strictly classified by **Urgency & Importance** and mandate an explicit **"WHY" (Systemic Rationale & Consequence)** for every issue detected.
 
 ---
 
-## Urgency & Importance Classification Matrix
+## 1. Operating Foundations
 
-Every finding identified during code review MUST be classified into one of the following 4 levels:
+### A. Dual-Axis Review Model
+A change can succeed on one axis and fail on the other:
+- **Standards Pass, Spec Fail**: Code is clean and idiomatic, but violates domain rules or fails edge cases.
+- **Spec Pass, Standards Fail**: Feature satisfies business requirements, but introduces architectural smells or fragile error handling.
 
-| Level | Severity Label | Definition & Threshold | PR Impact |
+### B. Urgency & Severity Matrix
+
+| Level | Severity Label | Definition & Threshold | PR Gate Action |
 | :--- | :--- | :--- | :--- |
-| **🔴 Level 1** | **Critical (Blocker)** | Security vulnerabilities, data loss/corruption risks, unhandled crash conditions in primary flows, breaking API contract changes without migration, or severe domain logic bugs. | **Merge Blocker**: Must fix immediately before PR approval. |
-| **🟡 Level 2** | **High (Major)** | Significant Fowler architectural smells, subtle race conditions, unhandled edge-case error states (e.g. unhandled timeouts, silent swallowing), or severe performance bottlenecks. | **Action Required**: Should fix before merge unless explicitly waived. |
-| **🔵 Level 3** | **Medium (Moderate)** | Standard code smells (duplicated logic, primitive obsession, feature envy), minor edge-case gaps, missing documentation on complex algorithms, or sub-optimal data patterns. | **Recommended**: Can merge with follow-up task or quick cleanup. |
-| **⚪ Level 4** | **Low (Minor / Advisory)** | Stylistic micro-suggestions, variable naming clarity, minor refactoring polish, or non-blocking optimization hints. | **Advisory**: Optional polish, does not delay merge. |
+| **🔴 Level 1** | **Critical (Blocker)** | Security vulnerabilities, data loss risks, unhandled crash conditions in primary flows, or breaking API changes. | **Merge Blocker**: Must fix immediately before PR approval. |
+| **🟡 Level 2** | **High (Major)** | Major Fowler architectural smells, race conditions, unhandled timeouts/error swallowing, or severe performance bottlenecks. | **Action Required**: Should fix before merge unless explicitly waived. |
+| **🔵 Level 3** | **Medium (Moderate)** | Standard code smells (duplicated logic, primitive obsession), minor edge-case gaps, or missing documentation. | **Recommended**: Can merge with follow-up task logged. |
+| **⚪ Level 4** | **Low (Advisory)** | Naming clarity, micro-suggestions, or style polish. | **Advisory**: Optional polish, does not delay merge. |
 
----
-
-## Mandatory Finding Schema (The "WHY" Requirement)
-
-Every finding reported MUST articulate the **"WHY" (Systemic Rationale & Consequence)** — bridging the technical code detail with its high-level impact on user experience, system stability, security, or maintainability:
+### C. Mandatory Finding Schema (The "WHY" Requirement)
+Every finding MUST connect the technical code detail directly with its high-level systemic/user impact:
 
 ```markdown
 - **[Severity Badge] [File Location & Line Number]**: Brief Summary
-  - **The "WHY" (Systemic Impact)**: Clear, jargon-free explanation of why this matters and what happens systemically if left unaddressed.
+  - **The "WHY" (Systemic Impact)**: Clear, non-jargon explanation of why this matters and what happens systemically if left unaddressed.
   - **Root Cause / Code Detail**: The specific code smell, missing edge-case check, or spec mismatch.
   - **Remediation Action**: Concrete code fix or refactoring steps.
 ```
 
 ---
 
-## Execution Steps
+## 2. Context Synthesis & Diff Discovery
 
-### Step 1: Fixed Point Pinning & PR Diff Validation
-Identify the comparison target supplied by the user (PR target branch `origin/main`, commit SHA, branch, tag, `HEAD~N`). If omitted, default to `origin/main`.
-
-Validate the reference and capture diff inputs:
-1. Verify ref validity: `git rev-parse <fixed-point>`
-2. Capture commit list: `git log <fixed-point>..HEAD --oneline`
+### Step 1: Fixed Point Pinning & Diff Capture
+1. Resolve target reference (default: `origin/main`): `git rev-parse <fixed-point>`
+2. Capture commit history: `git log <fixed-point>..HEAD --oneline`
 3. Capture merge-base diff: `git diff <fixed-point>...HEAD`
 
-**Completion Criterion**: Ref resolves successfully, diff is non-empty, and commit summary is captured. If ref is invalid or diff is empty, halt execution.
+### Step 2: 5-Layer Context Synthesis (Main Agent)
+Synthesize objective background facts directly (do NOT delegate to sub-agents):
+1. **Product Understanding**: App purpose, target users, high-level architecture.
+2. **Current Phase**: Roadmap stage or release cycle phase.
+3. **Phase Objective**: Feature set or milestone targeted in this branch.
+4. **Work Done**: Objective summary of modifications in the diff.
+5. **Review Targets**: Key quality metrics, data flow touchpoints, and edge-case boundaries.
 
-### Step 2: 5-Layer Context Synthesis (Main Agent Responsibility)
-**The main agent MUST perform the context discovery directly** by reading repository documentation (`README.md`, `PRD.md`, `docs/`, `specs/`, issue tracker) and `git log`. **Do NOT delegate context discovery to sub-agents**, as sub-agents start with a blank context window.
+---
 
-> **Crucial Independence Rule (Informative, Non-Directive Context):**
-> The main agent provides purely **objective background facts** (product domain, active phase, PRD requirements, git commit summary). The main agent **MUST NOT dictate conclusions, express opinions on pass/fail status, or steer the sub-agent toward a preferred finding**. Sub-agents must remain completely autonomous and form unbiased judgements strictly from the empirical code diff and specification artifacts.
+## 3. Parallel Sub-Agent Execution
 
-Synthesize a neutral, objective **5-Layer Context Chain** to feed into both sub-agents:
+Invoke two sub-agents concurrently via `invoke_subagent` in a single tool call (`Subagents: [...]`). Inject the 5-Layer Context Chain into both sub-agents upfront.
 
-1. **Product Understanding**: Objective purpose of the app/system, target users, and high-level architecture.
-2. **Current Phase / Stage**: Objective development roadmap phase or release cycle stage.
-3. **Current Phase Objective**: Stated feature set or milestone targeted in this phase.
-4. **Current Task / Work Done**: List of capabilities, fixes, or refactors present in the commit log and diff (without preliminary evaluation).
-5. **Review Scope & Robustness Targets**: Objective list of quality metrics, edge-case areas, state transitions, and data flow touchpoints to inspect.
+### A. Standards & Quality Sub-Agent
+- **Input**: Context Chain + `git diff` + Fowler Smells & Edge-Case Checklist.
+- **Checklist Focus**:
+  - *Fowler Smells*: Mysterious Name, Duplicated Code, Feature Envy, Primitive Obsession, Shotgun Surgery, Divergent Change.
+  - *Robustness*: Unhandled exceptions/nulls, race conditions, stale cache reads, unclosed resources, silent error swallowing.
+- **Output Requirement**: Findings grouped by Severity Level (🔴 Critical ➔ ⚪ Low) with explicit "WHY" (Systemic Impact) for each item.
 
-**Completion Criterion**: All 5 layers of the objective context chain are synthesized directly by the main agent and ready for sub-agent prompt injection.
+### B. Spec & Product Alignment Sub-Agent
+- **Input**: Context Chain + `git diff` + Approved Spec/PRD files.
+- **Checklist Focus**:
+  - Missing or partial spec requirements.
+  - Scope creep / unrequested behavior.
+  - Logic that breaks domain intent or user flows.
+- **Output Requirement**: Findings grouped by Severity Level (🔴 Critical ➔ ⚪ Low) with quoted spec lines and explicit "WHY" (User/Business Impact) for each item.
 
-### Step 3: Spec & Standards Discovery
+---
 
-#### A. Spec Sources (in priority order)
-1. Issue references in commit messages (`#123`, `Closes #45`, `!67`) or PR descriptions.
-2. User-provided path argument (`progress-map.md`, `spec.md`).
-3. Spec/PRD files under `docs/`, `specs/`, or `.scratch/` matching the branch or feature.
-4. If missing, prompt user. If unavailable, mark Spec axis as "No spec available".
+## 4. Structured Dual Reporting & PR Gate Decision
 
-#### B. Standards & Robustness Sources
-1. Documented repository standards (`CODING_STANDARDS.md`, `CONTRIBUTING.md`, `STYLE_GUIDE.md`).
-2. The Fowler Smell Baseline & Edge-Case Robustness Checklist (injected into Standards sub-agent):
-   - **Mysterious Name**: Function, variable, or type name does not reveal domain intent.
-   - **Duplicated Code**: Identical logic shape across multiple hunks or files.
-   - **Feature Envy**: Method reaches into another object's data more than its own.
-   - **Data Clumps**: Group of fields/params traveling together consistently.
-   - **Primitive Obsession**: Primitive standing in for a domain concept.
-   - **Repeated Switches**: Duplicate `switch`/`if` cascades across change.
-   - **Shotgun Surgery**: Single logical change forces scattered edits across many files.
-   - **Divergent Change**: Single module edited for multiple unrelated reasons.
-   - **Speculative Generality**: Unrequested hooks, params, or abstractions.
-   - **Message Chains**: Deep `a.b().c().d()` navigation.
-   - **Middle Man**: Class/function mostly delegating onward.
-   - **Refused Bequest**: Subclass overriding or ignoring most inherited behavior.
-   - **Edge-Case & Robustness Checklist**:
-     - *Null/Undefined & Unhandled Exceptions*: Boundary inputs, network timeouts, missing payload fields.
-     - *State Machine Invalidation*: Concurrent mutations, race conditions, stale cache reads.
-     - *Resource Leaks & Error Recovery*: Unclosed sockets, unhandled promise rejections, silent error swallowing.
-
-**Completion Criterion**: Spec source identified (or marked missing) and repository standards + robustness checklist prepared.
-
-### Step 4: Parallel Sub-Agent Spawning
-Invoke two sub-agents concurrently using `invoke_subagent` in a single tool call (`Subagents: [...]`). Inject the complete **5-Layer Context Chain** from Step 2 into both sub-agents upfront so they inspect diffs with full product and situational awareness.
-
-#### A. Standards & Quality Sub-Agent Prompt
-Include:
-- The 5-Layer Context Chain from Step 2.
-- Full `git diff` output and commit list.
-- Repo standards + Fowler Smell Baseline + Edge-Case & Robustness Checklist.
-- Task brief:
-  *"Analyze code quality and robustness per file/hunk. Group findings by Severity: 🔴 Critical (Blocker), 🟡 High (Major), 🔵 Medium (Moderate), ⚪ Low (Minor). For EVERY finding, you MUST include: (1) Location & Summary; (2) The 'WHY' (Systemic Rationale & Consequence — explain why this matters systemically and what happens if unaddressed); (3) Code detail; (4) Actionable fix. Skip tooling-enforced items. Under 500 words."*
-
-#### B. Spec & Product Sub-Agent Prompt
-Include:
-- The 5-Layer Context Chain from Step 2.
-- Full `git diff` output and commit list.
-- Full text or path of the Spec / Issue / PRD.
-- Task brief:
-  *"Analyze product alignment: (a) Missing or partial spec requirements; (b) Unrequested behavior / scope creep; (c) Implemented logic that breaks domain intent or user flow. Group findings by Severity: 🔴 Critical (Blocker), 🟡 High (Major), 🔵 Medium (Moderate), ⚪ Low (Minor). Quote spec lines for each finding. For EVERY finding, explicitly state the 'WHY' (Systemic & User Flow Impact). Under 500 words."* *(If spec is missing, report "No spec available".)*
-
-**Completion Criterion**: Both sub-agents launched concurrently and responses received.
-
-### Step 5: Aggregation & Structured Dual Reporting
-Synthesize sub-agent outputs into a structured dual-axis report sorted by Urgency/Importance Level:
+Synthesize findings into the final review report:
 
 ```markdown
 # Code Review Report
 
-## 1. Product & PR Context
-- **Product**: [Layer 1 Summary]
-- **Target PR / Branch**: `feat/feature-name` -> `main`
+## 1. Context & Scope
+- **Target Branch**: `feat/feature-name` ➔ `main`
 - **Associated Issue**: `#123`
-- **Current Phase & Objective**: [Layer 2 & 3 Summary]
-- **Work Being Reviewed**: [Layer 4 & 5 Summary]
+- **Review Scope**: [Layer 4 & 5 Summary]
 
 ---
 
 ## 2. Standards & Robustness Review
 
 ### 🔴 Critical (Blockers)
-- **`path/to/file.ts:L45`**: [Brief Summary]
-  - **The "WHY" (Systemic Impact)**: [Consequence if left unaddressed]
-  - **Detail**: [Code smell / unhandled exception]
-  - **Action**: [Remediation steps]
+- **`src/services/payment.ts:L45`**: Unhandled Network Timeout
+  - **The "WHY" (Systemic Impact)**: Leaves transactions in zombie state, causing client/DB data drift and lost revenue.
+  - **Code Detail**: Fetch call lacks abort controller or timeout handler.
+  - **Action**: Wrap call with `AbortSignal.timeout(5000)` and handle `TimeoutError`.
 
 ### 🟡 High (Major Issues)
-- ...
+...
 
 ### 🔵 Medium (Moderate Issues)
-- ...
+...
 
 ### ⚪ Low (Minor / Advisory)
-- ...
+...
 
 ---
 
 ## 3. Spec & Domain Review
 
 ### 🔴 Critical (Spec Blockers)
-- ...
+...
 
 ### 🟡 High (Major Spec Drift)
-- ...
+...
 
 ### 🔵 Medium (Moderate Spec Gaps)
-- ...
+...
 
 ### ⚪ Low (Minor Advisory)
-- ...
+...
 
 ---
 
-## 4. Summary & PR Gate Recommendation
-- **Critical Findings**: N (Must resolve before merge)
-- **High Findings**: N (Should resolve before merge)
-- **Medium/Low Findings**: N (Advisory / Follow-up)
-- **PR Gate Decision**: [🟢 APPROVE | 🟡 REQUEST CHANGES | 🔴 RE-ROUTE TO TDD]
+## 4. PR Gate Recommendation
+- **Status Summary**: N Critical | N High | N Medium | N Low
+- **Decision**: 
+  - 🟢 **APPROVE**: Zero Critical/High issues. Ready to merge.
+  - 🟡 **REQUEST CHANGES**: High issues present. Resolution required before merge.
+  - 🔴 **RE-ROUTE TO TDD**: Critical blockers or fundamental smells present. Cycle back to `implementation-tdd`.
 ```
-
-Do not merge or re-rank findings across axes, but ensure every finding is classified by Urgency Level and includes its "WHY" rationale.
-
-**Completion Criterion**: Dual-axis report presented with 5-layer context header, severity-grouped findings with "WHY" explanations, and PR decision.
