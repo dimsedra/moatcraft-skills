@@ -1,82 +1,68 @@
 ---
 name: moatcraft-onboarding
-description: Conduct an interactive onboarding session and generate moatcraft-contract.md to align human users and AI agents on operating principles, skill rationale, and execution workflows. Use when introducing new users to Moatcraft or initializing a project.
+description: Agent guide for explaining the Moatcraft workflow to new users on first install. Walk users through how the development loop works, why each skill exists, and what to expect — using high-level human abstractions. Use automatically when Moatcraft skills are first installed in a project, or when a user asks how the Moatcraft workflow operates.
 ---
 
-# Moatcraft Onboarding & Working Contract
+# Moatcraft Onboarding (Agent Workflow Guide)
 
-This skill introduces new users to the **Moatcraft** development suite, demystifying the "why" behind each skill, eliminating blackbox confusion, and establishing an explicit **Working Contract (`moatcraft-contract.md`)** between the human co-founder and the AI agent.
-
----
-
-## 1. Why Moatcraft Exists (The Strategic Rationale)
-
-Most AI coding tools operate as "blackboxes"—they generate quick commodity code, blindly agree with questionable design choices, and produce generic UI templates that lack defensible identity.
-
-Moatcraft exists to build **Defensible Architectural & Design Moats** through a continuous, artifact-driven development loop:
-- **No Commodity UI**: Pushes past 1st generic ideas to 2nd/3rd brand-anchored concepts.
-- **No Sycophancy**: Pushes back constructively on logical/technical contradictions.
-- **No Unchecked Code**: Every feature is verified via TDD, spec alignment audits, and dual-axis code reviews.
+This skill is **an internal agent guide**, not a user-facing questionnaire. It instructs the agent on how to transparently walk new users through the Moatcraft development workflow so they understand what they are working with — eliminating the "blackbox" sensation of installing skills without knowing what they do or why they exist.
 
 ---
 
-## 2. The Skill Suite Architecture & Rationale
+## 1. When to Activate
 
-| Layer | Skill | Why It Exists (The "Why") |
-| :--- | :--- | :--- |
-| **Strategy** | `brand-product-alignment` | Establishes identity boundaries ("What it IS vs. IS NOT") so code reflects brand authority. |
-| **Visual Spec** | `front-end-designer` | Materializes brand textures, opinionated fonts, and calculated whitespace without breaking usability. |
-| **Backend Spec** | `backend-architect` | Defines data flow, SLAs, reliability targets, and technical moats in jargon-free dialogue. |
-| **Roadmap** | `progress-mapper` | Decomposes specs into living, git-mapped tasks and atomic Red-Green TDD sub-tasks. |
-| **Execution** | `implementation-tdd` | Executes artifact-driven Red-Green TDD on isolated feature branches. |
-| **Fidelity** | `alignment-audit` | Upstream auditor preventing scope creep and unapproved plan deviations before PR merge. |
-| **Quality** | `code-review` | Dual-axis review evaluating code smells (Fowler baseline) and domain correctness. |
-| **Learning** | `explain-and-teach` | Delivers adaptive, high-level mental models and human abstractions without fluff. |
-| **Orchestration**| `agentic-dev-loop` | Manages the bi-directional feedback loop and upstream cascade re-audits. |
+Activate this skill automatically when:
+- Moatcraft skills are **first installed** in a new project (no prior spec artifacts exist).
+- A user **asks how the Moatcraft workflow works** or what the skills do.
+- A user seems confused about the development loop or skill invocation order.
 
 ---
 
-## 3. The Working Contract Principles
+## 2. Onboarding Tone & Approach
 
-When initializing Moatcraft, the human user and AI agent agree to 5 Core Mandates:
-
-1. **The Anti-Yes-Man Mandate**: The agent is obligated to challenge unexamined assumptions, reject generic 1st ideas, and offer proactive alternative recommendations.
-2. **Form-Function Equilibrium**: Aesthetics and surface materials must never compromise WCAG accessibility, intuitive usability, or add cognitive noise.
-3. **Calculated Whitespace Control**: Whitespace is an active instrument of power to control how viewers consume and digest information.
-4. **Bi-Directional Cascade**: Strategic shifts trigger downstream spec re-audits; execution contradictions trigger upstream escalations.
-5. **High-Level Human Abstractions First**: Explanations default to intuitive mental models; low-level code mechanics are provided on demand in hybrid form.
+- **Use `explain-and-teach` principles**: High-level human abstractions, intuitive mental models, zero jargon dumps. The user should walk away feeling they genuinely understand the workflow, not that they were lectured at.
+- **Conversational, not ceremonial**: This is not a contract signing. It is a casual, transparent walkthrough — like a co-founder explaining the team's development philosophy to a new collaborator over coffee.
+- **Offer, don't force**: On first detection, the agent should offer: *"This is your first time using Moatcraft — want me to walk you through how the workflow operates so you know what to expect?"* If the user declines, proceed directly to the requested task.
 
 ---
 
-## 4. Execution Workflow
+## 3. What to Cover (High-Level Walkthrough)
 
-### Step 1: Interactive Onboarding Dialogue
-Walk the user through the 5 Working Contract Mandates and the skill suite rationale in conversational, high-level terms. Ask:
-- *What type of project are you building? (Front-End First, Back-End First, or Full-Stack)*
-- *What is the primary defensible moat you want to achieve?*
+When the user accepts the walkthrough, explain the following concepts using natural human logic. Do NOT recite skill names as a dry list — weave them into a narrative of how a product gets built:
 
-### Step 2: Synthesis of `moatcraft-contract.md`
-Generate `moatcraft-contract.md` at the project root:
+### A. The Problem Moatcraft Solves
+Most AI coding tools produce generic, interchangeable output. If you removed the logo, you couldn't tell one product from another. Moatcraft exists to make sure that doesn't happen — every design choice, architecture decision, and line of code is anchored to a defensible identity.
 
-```markdown
-# Moatcraft Working Contract: [Project Name]
+### B. How the Workflow Flows (The Mental Model)
+Walk the user through the natural progression:
 
-## 1. Project Alignment & Moat Target
-- **Primary Strategy Route**: [Front-End First | Back-End First | Full-Stack]
-- **Target Moat Signature**: ...
+1. **First, we figure out who you are** — Before writing any code, we have a conversation about your brand, product identity, and what makes you different. This becomes the anchor for everything downstream.
+2. **Then, we translate that into specs** — Your identity gets materialized into concrete front-end visual specs (textures, typography, spatial rhythm) and backend architecture specs (data flow, reliability, technical moats). These are living documents, not frozen requirements.
+3. **We map out what to build** — The specs get decomposed into a living roadmap of milestones and atomic tasks. This roadmap is flexible — it adapts as we learn more during development.
+4. **We build with discipline** — Every task follows Red-Green TDD on isolated Git branches. Write the test first (it fails), then write the minimum code to make it pass.
+5. **We verify twice before shipping** — First, an alignment audit checks whether what we built actually matches the specs (no scope creep, no missing items). Then, a code review evaluates quality and edge-case robustness. If either finds issues, we loop back and fix before merging.
+6. **The loop is alive** — If requirements shift mid-flight (and they always do), the system cascades re-audits downstream. If we discover a fundamental contradiction during coding, we escalate back upstream to resolve it at the right level.
 
-## 2. Core Working Principles
-- [x] Anti-Yes-Man Protocol Active (Agent pushes back on commodity solutions)
-- [x] Form-Function Equilibrium (WCAG AA/AAA compliance enforced)
-- [x] Calculated Whitespace Control (Information flow pacing active)
-- [x] Bi-Directional Cascade Protocol (Upstream/downstream re-alignment enabled)
-- [x] High-Level Abstractions First (Hybrid code mapping on demand)
+### C. What the User Should Expect from the Agent
+- The agent will **push back on generic first ideas** and iterate toward unique solutions.
+- The agent will **challenge assumptions** constructively if it spots contradictions or hidden trade-offs.
+- Explanations will default to **high-level mental models**; technical code details are provided only when asked.
+- The agent will **ask for sign-off on specs** before building, so there are no surprises.
 
-## 3. Active Skill Pipeline & Next Step
-- **Next Recommended Skill**: `brand-product-alignment` or `agentic-dev-loop`
-```
+### D. What the User Owns
+- **Every spec artifact is theirs** — `brand-product-alignment-spec.md`, `front-end-design-spec.md`, `backend-architecture-spec.md`, `progress-map.md`. These are version-controlled, living documents the user can review, edit, and approve at any time.
+- **The user drives strategic direction** — The agent proposes, challenges, and executes, but the user makes the final call on brand positioning, visual direction, and architectural trade-offs.
 
-Commit `moatcraft-contract.md` to git (`docs(setup): initialize moatcraft working contract`).
+---
 
-### Step 3: Route Handoff
-Guide the user directly into the next recommended skill (`brand-product-alignment` or `agentic-dev-loop`).
+## 4. After the Walkthrough
+
+Once the user feels oriented, guide them to the natural starting point:
+- *"Ready to start? The first step is usually figuring out your brand and product identity. Want to kick that off?"*
+- Route to `brand-product-alignment` or `agentic-dev-loop` based on user preference.
+
+---
+
+## 5. Ongoing Reference
+
+If at any point during development the user asks *"Why are we doing this?"*, *"What's the point of this audit?"*, or *"How does this fit into the bigger picture?"*, use `explain-and-teach` to answer — anchoring the explanation back to the workflow mental model established during onboarding.

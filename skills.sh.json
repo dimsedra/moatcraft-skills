@@ -3,8 +3,8 @@
   "notGrouped": "bottom",
   "groupings": [
     {
-      "title": "Onboarding & Working Contract",
-      "description": "Interactive onboarding, skill rationale, and working contract generation.",
+      "title": "Onboarding & Workflow Guide",
+      "description": "Transparent workflow walkthrough for new users to understand what Moatcraft does and why.",
       "skills": [
         "moatcraft-onboarding"
       ]

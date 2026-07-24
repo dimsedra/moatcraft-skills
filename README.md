@@ -28,8 +28,8 @@ npx skills add dimsedra/moatcraft-skills@moatcraft-onboarding
 
 ```mermaid
 flowchart TD
-    subgraph Layer0 ["0. Onboarding & Alignment"]
-        ONB["moatcraft-onboarding<br/><i>(Onboarding & Working Contract)</i>"]
+    subgraph Layer0 ["0. Onboarding"]
+        ONB["moatcraft-onboarding<br/><i>(Workflow Walkthrough)</i>"]
     end
 
     subgraph Layer1 ["1. Brand Strategy"]
@@ -84,7 +84,7 @@ flowchart TD
 
 | Skill | Category | Description | Primary Output Artifact |
 | :--- | :--- | :--- | :--- |
-| **`moatcraft-onboarding`** | Onboarding | Explains skill suite rationale, demystifies blackbox workflows, and generates living working contract. | `moatcraft-contract.md` |
+| **`moatcraft-onboarding`** | Onboarding | Agent guide that transparently walks new users through the Moatcraft workflow, explaining why each skill exists and what to expect. | Conversational Walkthrough |
 | **`brand-product-alignment`** | Strategy | Conducts fluid brand and product discovery to define positioning, identity boundaries, and experience moats. | `brand-product-alignment-spec.md` |
 | **`front-end-designer`** | Front-End | Applies opinionated UI rules, breathable visual hierarchy, 2nd/3rd idea iteration, and universal component moats. | `front-end-design-spec.md` |
 | **`backend-architect`** | Back-End | Conducts natural, jargon-free backend discovery for data flow, operational limits, SLAs, and technical moats. | `backend-architecture-spec.md` |
