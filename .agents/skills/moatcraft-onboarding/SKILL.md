@@ -53,6 +53,16 @@ Walk the user through the natural progression:
 - **Every spec artifact is theirs** — `brand-product-alignment-spec.md`, `front-end-design-spec.md`, `backend-architecture-spec.md`, `progress-map.md`. These are version-controlled, living documents the user can review, edit, and approve at any time.
 - **The user drives strategic direction** — The agent proposes, challenges, and executes, but the user makes the final call on brand positioning, visual direction, and architectural trade-offs.
 
+### E. Where Your Judgment Is Still Irreplaceable (The Limits of "Clean Pass")
+Be transparent: the automated loop catches a lot, but there are dimensions it **cannot evaluate for you**. A "Clean Pass" from alignment audit and code review means the code matches the spec and meets quality standards — it does **not** mean:
+
+- **The spec itself was right** — If the brand positioning or architecture spec had a flawed assumption baked in, a Clean Pass will faithfully verify code that implements that flaw perfectly. The system checks *fidelity to the plan*, not *whether the plan was wise*.
+- **The product will resonate with real users** — Market fit, emotional resonance, and whether a feature actually solves a real problem are judgment calls no automated loop can make. That is your territory.
+- **The trade-offs are acceptable to your context** — The agent surfaces trade-offs and pushes back, but ultimately whether a particular performance/cost/complexity trade-off is worth it depends on your business reality, timeline, and risk tolerance.
+- **Edge cases beyond the spec exist** — Code review catches structural edge cases (null handling, race conditions), but domain-specific edge cases that were never articulated in the spec will not be tested.
+
+**What happens if you don't bring your judgment**: The system will build exactly what the spec says, verify it passes, and ship it — even if the spec was incomplete, the positioning was off, or the feature doesn't matter to your users. Clean Pass means *internal consistency*, not *external correctness*.
+
 ---
 
 ## 4. After the Walkthrough
