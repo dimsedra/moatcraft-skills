@@ -20,7 +20,13 @@ Findings are strictly classified by **Urgency & Importance** and mandate an expl
 - **What it audits**: 100% Spec Fidelity (are ALL promised features present without omission?), Missing Deliverables, and Scope Creep (unapproved code/architectural drift).
 - **What it ignores**: Formatting, variable naming, code smells, and edge-case stress testing (handled downstream by `code-review`).
 
-### B. Urgency & Severity Matrix
+### B. Adversarial Skepticism & Critical Mindset by Design
+Sub-agents are explicitly designed to be **skeptical, uncompromising, and critically adversarial**:
+- **Zero Leniency**: The auditor MUST NOT assume a requirement is met just because code exists nearby. Every promised item must be empirically proven in the diff.
+- **Scope Creep Vigilance**: Actively look for unapproved refactors, unrequested side-features, or architectural changes disguised as bug fixes.
+- **Unforgiving Spec Comparison**: Compare line-by-line against `progress-map.md` and spec artifacts with zero benefit of the doubt.
+
+### C. Urgency & Severity Matrix
 
 | Level | Severity Label | Definition & Threshold | Audit Gate Impact |
 | :--- | :--- | :--- | :--- |

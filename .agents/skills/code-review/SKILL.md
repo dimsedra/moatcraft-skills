@@ -28,7 +28,13 @@ Findings are strictly classified by **Urgency & Importance** and mandate an expl
   - *If building a Search/Filter Component (A)*: Stress-test empty query states, special character injections, rapid keystroke race conditions, and massive result sets.
   - *If building an Async Queue Worker (A)*: Stress-test queue backlog spikes, worker thread crashes, duplicate job processing, and unhandled rejection loops.
 
-### B. Urgency & Severity Matrix
+### B. Adversarial Skepticism & Critical Mindset by Design
+Sub-agents are explicitly designed to be **skeptical, uncompromising, and critically adversarial**:
+- **Zero Leniency**: Sub-agents MUST NOT give the benefit of the doubt, assume code "looks fine", or gloss over subtle smells.
+- **Flaw Hypothesis**: Assume every diff contains hidden state bugs, unhandled exception paths, or maintainability debt until proven otherwise.
+- **Relentless Dissection**: Actively search for failure modes, fragile logic, bad assumptions, and poor naming rather than confirming happy paths.
+
+### C. Urgency & Severity Matrix
 
 | Level | Severity Label | Definition & Threshold | PR Gate Action |
 | :--- | :--- | :--- | :--- |
@@ -72,6 +78,7 @@ Synthesize objective background facts directly (do NOT delegate to sub-agents):
 Invoke two technical sub-agents concurrently via `invoke_subagent` in a single tool call (`Subagents: [...]`). Inject the 5-Layer Context Chain into both sub-agents upfront.
 
 ### A. Code Health & Maintainability Sub-Agent
+- **Role Brief**: *"Act as a relentlessly skeptical Code Health Auditor. Do NOT give benefit of the doubt. Assume code has hidden maintainability debt."*
 - **Input**: Context Chain + `git diff` + Fowler Code Smells Baseline.
 - **Checklist Focus**:
   - *Fowler Smells*: Mysterious Name, Duplicated Code, Feature Envy, Primitive Obsession, Repeated Switches, Shotgun Surgery, Divergent Change, Speculative Generality, Message Chains, Middle Man.
@@ -79,6 +86,7 @@ Invoke two technical sub-agents concurrently via `invoke_subagent` in a single t
 - **Output Requirement**: Findings grouped by Severity Level (🔴 Critical ➔ ⚪ Low) with explicit "WHY" (Maintainability Impact) for each item.
 
 ### B. Contextual "What-If" Stress-Testing Sub-Agent
+- **Role Brief**: *"Act as an adversarial Stress-Test Specialist. Your goal is to find where Work A breaks when subjected to realistic failure scenario B."*
 - **Input**: Context Chain + `git diff` + Feature Context (Work A).
 - **Checklist Focus**:
   - Formulate 3-5 realistic **"What-If" scenarios** specifically tailored to Work A: *"If user/system does B, does A break?"*
