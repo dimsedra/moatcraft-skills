@@ -34,23 +34,28 @@ Sub-agents are explicitly designed to be **skeptical, uncompromising, and critic
 - **Flaw Hypothesis**: Assume every diff contains hidden state bugs, unhandled exception paths, or maintainability debt until proven otherwise.
 - **Relentless Dissection**: Actively search for failure modes, fragile logic, bad assumptions, and poor naming rather than confirming happy paths.
 
-### C. Urgency & Severity Matrix
+### C. Secret Protection & Credential Redaction Protocol
+- **Sanitized Diff Exposure**: Before passing diff context to sub-agents or generating report output, **redact and mask all credentials, tokens, passwords, and private keys** (e.g. replace with `[REDACTED_CREDENTIAL]`).
+- **No Verbatim Secret Quoting**: Sub-agents and report generators must **NEVER output raw secret strings or credential hunks**. Refer to locations using file paths and line numbers (`src/auth.ts:L42`) rather than embedding raw diff hunks.
+- **Hardcoded Secret Detection**: If hardcoded secrets or API keys are detected in the diff, immediately flag as a Level 1 Critical Security Finding with masked token references.
+
+### D. Urgency & Severity Matrix
 
 | Level | Severity Label | Definition & Threshold | PR Gate Action |
 | :--- | :--- | :--- | :--- |
-| **🔴 Level 1** | **Critical (Blocker)** | Security vulnerabilities, data loss/corruption risks, or fatal crashes triggered under realistic "What-If" scenario B. | **Merge Blocker**: Must fix immediately before PR approval. |
-| **🟡 Level 2** | **High (Major)** | Major Fowler smells, subtle race conditions, unhandled timeouts/error swallowing, or degraded state handling under "What-If" conditions. | **Action Required**: Should fix before merge unless explicitly waived. |
-| **🔵 Level 3** | **Medium (Moderate)** | Standard code smells (duplicated logic, primitive obsession), minor edge-case gaps, or missing inline documentation. | **Recommended**: Can merge with follow-up task logged. |
-| **⚪ Level 4** | **Low (Advisory)** | Naming clarity, micro-suggestions, or style polish. | **Advisory**: Optional polish, does not delay merge. |
+| **Level 1** | **Critical (Blocker)** | Security vulnerabilities, hardcoded secrets, data loss/corruption risks, or fatal crashes. | **Merge Blocker**: Must fix immediately before PR approval. |
+| **Level 2** | **High (Major)** | Major Fowler smells, subtle race conditions, unhandled timeouts/error swallowing, or degraded state handling. | **Action Required**: Should fix before merge unless explicitly waived. |
+| **Level 3** | **Medium (Moderate)** | Standard code smells (duplicated logic, primitive obsession), minor edge-case gaps, or missing documentation. | **Recommended**: Can merge with follow-up task logged. |
+| **Level 4** | **Low (Advisory)** | Naming clarity, micro-suggestions, or style polish. | **Advisory**: Optional polish, does not delay merge. |
 
-### C. Mandatory Finding Schema (The "WHY" Requirement)
+### E. Mandatory Finding Schema (The "WHY" Requirement)
 Every finding MUST connect the technical flaw or "What-If" failure directly to its systemic impact:
 
 ```markdown
 - **[Severity Badge] [File Location & Line Number]**: Brief Summary
   - **Contextual "What-If" Scenario**: *"Given [Work A], if [Scenario B] happens..."*
   - **The "WHY" (Systemic Impact)**: Clear, non-jargon explanation of what breaks systemically or for the user if left unaddressed.
-  - **Root Cause / Code Detail**: The specific code smell, missing check, or state invalidation risk.
+  - **Root Cause / Code Detail**: Conceptual description of the code smell, missing check, or state invalidation risk (no raw secret dumps).
   - **Remediation Action**: Concrete code fix or refactoring steps.
 ```
 
@@ -58,10 +63,11 @@ Every finding MUST connect the technical flaw or "What-If" failure directly to i
 
 ## 2. Context Synthesis & Diff Discovery
 
-### Step 1: Fixed Point Pinning & Diff Capture
+### Step 1: Fixed Point Pinning & Sanitized Diff Capture
 1. Resolve target reference (default: `origin/main`): `git rev-parse <fixed-point>`
 2. Capture commit history: `git log <fixed-point>..HEAD --oneline`
 3. Capture merge-base diff: `git diff <fixed-point>...HEAD`
+4. **Sanitize diff**: Mask any detected secrets or credentials before injecting into sub-agent prompts.
 
 ### Step 2: Canonical 5-Layer Context Synthesis (Main Agent)
 Synthesize objective background facts directly into the canonical **5-Layer Context Chain**:
@@ -75,26 +81,26 @@ Synthesize objective background facts directly into the canonical **5-Layer Cont
 
 ## 3. Parallel Sub-Agent Execution
 
-Invoke two technical sub-agents concurrently via `invoke_subagent` in a single tool call (`Subagents: [...]`). Inject the canonical 5-Layer Context Chain into both sub-agents upfront.
+Invoke two technical sub-agents concurrently via `invoke_subagent` in a single tool call (`Subagents: [...]`). Inject the canonical 5-Layer Context Chain and sanitized diff into both sub-agents upfront.
 
 ### A. Code Health & Maintainability Sub-Agent
 - **Model**: `"flash"` (fast, token-efficient analysis of code health patterns).
-- **Role Brief**: *"Act as a relentlessly skeptical Code Health Auditor. Do NOT give benefit of the doubt. Assume code has hidden maintainability debt."*
-- **Input**: Canonical 5-Layer Context Chain + `git diff` + Fowler Code Smells Baseline.
+- **Role Brief**: *"Act as a relentlessly skeptical Code Health Auditor. Do NOT give benefit of the doubt. Assume code has hidden maintainability debt. Mask any credential strings in output."*
+- **Input**: Canonical 5-Layer Context Chain + Sanitized `git diff` + Fowler Code Smells Baseline.
 - **Checklist Focus**:
   - *Fowler Smells*: Mysterious Name, Duplicated Code, Feature Envy, Primitive Obsession, Repeated Switches, Shotgun Surgery, Divergent Change, Speculative Generality, Message Chains, Middle Man.
   - *Architecture & Cleanliness*: Single Responsibility violations, tight coupling, hardcoded values, missing type safety.
-- **Output Requirement**: Findings grouped by Severity Level (🔴 Critical ➔ ⚪ Low) with explicit "WHY" (Maintainability Impact) for each item. Keep concise (<500 words).
+- **Output Requirement**: Findings grouped by Severity Level (Critical ➔ Low) with explicit "WHY" (Maintainability Impact) for each item. Keep concise (<500 words). Do not quote raw secrets.
 
 ### B. Contextual "What-If" Stress-Testing Sub-Agent
 - **Model**: `"pro"` (deep reasoning model for complex edge-case & failure state analysis).
-- **Role Brief**: *"Act as an adversarial Stress-Test Specialist. Your goal is to find where Work A breaks when subjected to realistic failure scenario B."*
-- **Input**: Canonical 5-Layer Context Chain + `git diff` + Feature Context (Work A).
+- **Role Brief**: *"Act as an adversarial Stress-Test Specialist. Your goal is to find where Work A breaks when subjected to realistic failure scenario B. Mask any credential strings in output."*
+- **Input**: Canonical 5-Layer Context Chain + Sanitized `git diff` + Feature Context (Work A).
 - **Checklist Focus**:
   - Formulate 3-5 realistic **"What-If" scenarios** specifically tailored to Work A: *"If user/system does B, does A break?"*
   - *Exception & Boundary Recovery*: Null/undefined payload fields, boundary inputs, timeouts, network drops.
   - *Concurrency & State Machine Invalidation*: Concurrent mutations, race conditions, stale cache reads, unclosed resources.
-- **Output Requirement**: Findings grouped by Severity Level (🔴 Critical ➔ ⚪ Low) with explicit "What-If" scenario descriptions and "WHY" (Systemic Risk) for each item. Keep concise (<500 words).
+- **Output Requirement**: Findings grouped by Severity Level (Critical ➔ Low) with explicit "What-If" scenario descriptions and "WHY" (Systemic Risk) for each item. Keep concise (<500 words). Do not quote raw secrets.
 
 ---
 
@@ -114,39 +120,39 @@ Synthesize findings into the final review report:
 
 ## 2. Code Health & Maintainability Review
 
-### 🔴 Critical (Blockers)
+### Critical (Blockers)
 - **`src/services/payment.ts:L45`**: Mysterious Name & Tight Coupling
   - **The "WHY" (Maintainability Impact)**: Increases cognitive overhead and risk of regression during future maintenance.
   - **Code Detail**: Variable `x` obscures payment token state.
   - **Action**: Rename to `paymentToken` and encapsulate logic.
 
-### 🟡 High (Major Issues)
+### High (Major Issues)
 ...
 
-### 🔵 Medium (Moderate Issues)
+### Medium (Moderate Issues)
 ...
 
-### ⚪ Low (Minor / Advisory)
+### Low (Minor / Advisory)
 ...
 
 ---
 
 ## 3. Contextual "What-If" Stress-Testing Review
 
-### 🔴 Critical (Runtime Stress-Test Failures)
+### Critical (Runtime Stress-Test Failures)
 - **`src/api/checkout.ts:L88`**: Unhandled Timeout under Payment Retry
   - **Contextual "What-If" Scenario**: *"Given checkout payment flow, if network times out during gateway retry..."*
   - **The "WHY" (Systemic Impact)**: Leaves transactions in zombie state, causing client/DB data drift and lost revenue.
   - **Code Detail**: Fetch call lacks abort controller or timeout handler.
   - **Action**: Wrap call with `AbortSignal.timeout(5000)` and handle `TimeoutError`.
 
-### 🟡 High (Major Stress-Test Risks)
+### High (Major Stress-Test Risks)
 ...
 
-### 🔵 Medium (Moderate Edge Cases)
+### Medium (Moderate Edge Cases)
 ...
 
-### ⚪ Low (Minor Advisory)
+### Low (Minor Advisory)
 ...
 
 ---
@@ -154,7 +160,7 @@ Synthesize findings into the final review report:
 ## 4. PR Gate Recommendation
 - **Status Summary**: N Critical | N High | N Medium | N Low
 - **Decision**: 
-  - 🟢 **APPROVE**: Zero Critical/High issues. Ready to merge.
-  - 🟡 **REQUEST CHANGES**: High issues present. Resolution required before merge.
-  - 🔴 **RE-ROUTE TO TDD**: Critical blockers or stress-test failures present. Cycle back to `implementation-tdd`.
+  - **APPROVE**: Zero Critical/High issues. Ready to merge.
+  - **REQUEST CHANGES**: High issues present. Resolution required before merge.
+  - **RE-ROUTE TO TDD**: Critical blockers or stress-test failures present. Cycle back to `implementation-tdd`.
 ```
