@@ -84,7 +84,7 @@ flowchart TD
 
 | Skill | Category | Description | Primary Output Artifact |
 | :--- | :--- | :--- | :--- |
-| **`moatcraft-onboarding`** | Onboarding | Agent guide that transparently walks new users through the Moatcraft workflow, explaining why each skill exists and what to expect. | Conversational Walkthrough |
+| **`moatcraft-onboarding`** | Onboarding | Walks new users through the Moatcraft workflow AND integrates the environment into their project — adapted per project state (clean slate, mid-development, workflow migration). | Spec directory, inferred specs, git conventions |
 | **`brand-product-alignment`** | Strategy | Conducts fluid brand and product discovery to define positioning, identity boundaries, and experience moats. | `brand-product-alignment-spec.md` |
 | **`front-end-designer`** | Front-End | Applies opinionated UI rules, breathable visual hierarchy, 2nd/3rd idea iteration, and universal component moats. | `front-end-design-spec.md` |
 | **`backend-architect`** | Back-End | Conducts natural, jargon-free backend discovery for data flow, operational limits, SLAs, and technical moats. | `backend-architecture-spec.md` |

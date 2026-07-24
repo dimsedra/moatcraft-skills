@@ -1,11 +1,15 @@
 ---
 name: moatcraft-onboarding
-description: Agent guide for explaining the Moatcraft workflow to new users on first install. Walk users through how the development loop works, why each skill exists, and what to expect — using high-level human abstractions. Use automatically when Moatcraft skills are first installed in a project, or when a user asks how the Moatcraft workflow operates.
+description: Agent guide for onboarding new users into the Moatcraft workflow — both explaining how it works AND integrating the workflow environment into the user's project. Adapts setup to project state (clean slate, mid-development, or workflow migration). Use automatically when Moatcraft skills are first installed, or when a user asks how the Moatcraft workflow operates.
 ---
 
-# Moatcraft Onboarding (Agent Workflow Guide)
+# Moatcraft Onboarding (Explain + Integrate)
 
-This skill is **an internal agent guide**, not a user-facing questionnaire. It instructs the agent on how to transparently walk new users through the Moatcraft development workflow so they understand what they are working with — eliminating the "blackbox" sensation of installing skills without knowing what they do or why they exist.
+This skill has two jobs:
+1. **Explain** — Walk the user through how the Moatcraft workflow operates so they genuinely understand what they're working with.
+2. **Integrate** — Actually set up the Moatcraft workflow environment in the user's project, adapted to their specific starting conditions.
+
+Both happen together during onboarding. The user should walk away both understanding the system and having a working environment ready to use.
 
 ---
 
@@ -21,88 +25,123 @@ Activate this skill automatically when:
 
 ## 2. Project State Detection
 
-Before beginning the walkthrough, the agent should silently assess the project state by scanning for existing signals:
+Before beginning, silently assess the project state:
 
-- **Clean Slate** (no `src/`, no `package.json`/`pyproject.toml`/`go.mod`, no existing spec files): Full onboarding from Phase 1 (brand-product-alignment).
-- **Mid-Development** (existing source code, dependencies, possibly partial docs/specs, git history): The user is adopting Moatcraft into a project that already has momentum. The workflow needs to meet them where they are, not demand they start over.
-- **Workflow Migration** (existing CI/CD configs, other agent skill files, `.cursor/`, `.claude/`, custom linting/review pipelines): The user is coming from another workflow or toolchain. Acknowledge what they already have and explain how Moatcraft layers in — not replaces — their existing setup where possible.
+- **Clean Slate** — No `src/`, no `package.json`/`pyproject.toml`/`go.mod`, no existing spec files. This is a brand new project.
+- **Mid-Development** — Existing source code, dependencies, possibly partial docs/specs, git history. The project has momentum.
+- **Workflow Migration** — Existing CI/CD configs, other agent skill files (`.cursor/`, `.claude/`, etc.), custom linting/review pipelines. The user is coming from another toolchain.
+
+These categories aren't mutually exclusive — a mid-development project may also be a workflow migration. Detect all applicable signals.
 
 ---
 
 ## 3. Onboarding Tone & Approach
 
-- **Use `explain-and-teach` principles**: High-level human abstractions, intuitive mental models, zero jargon dumps. The user should walk away feeling they genuinely understand the workflow, not that they were lectured at.
-- **Conversational, not ceremonial**: This is not a contract signing. It is a casual, transparent walkthrough — like a co-founder explaining the team's development philosophy to a new collaborator over coffee.
-- **Offer, don't force**: On first detection, the agent should offer: *"This is your first time using Moatcraft — want me to walk you through how the workflow operates so you know what to expect?"* If the user declines, proceed directly to the requested task.
+- **Use `explain-and-teach` principles**: High-level human abstractions, intuitive mental models, zero jargon dumps.
+- **Conversational, not ceremonial**: Like a co-founder explaining the team's dev philosophy over coffee.
+- **Offer, don't force**: *"This is your first time using Moatcraft — want me to walk you through how it works and set up the environment for your project?"* If the user declines, proceed directly to their requested task.
+- **Explain while doing**: Don't treat explanation and setup as separate phases. As you create each artifact or directory, briefly explain why it exists. The user learns the system by watching it get built.
 
 ---
 
-## 4. What to Cover (High-Level Walkthrough)
+## 4. What to Explain (High-Level Walkthrough)
 
-When the user accepts the walkthrough, explain the following concepts using natural human logic. Do NOT recite skill names as a dry list — weave them into a narrative of how a product gets built:
+Weave these into a narrative — not a dry list of skill names:
 
 ### A. The Problem Moatcraft Solves
-Most AI coding tools produce generic, interchangeable output. If you removed the logo, you couldn't tell one product from another. Moatcraft exists to make sure that doesn't happen — every design choice, architecture decision, and line of code is anchored to a defensible identity.
+Most AI coding tools produce generic, interchangeable output. If you removed the logo, you couldn't tell one product from another. Moatcraft anchors every design choice, architecture decision, and line of code to a defensible identity.
 
 ### B. How the Workflow Flows (The Mental Model)
-Walk the user through the natural progression:
 
-1. **First, we figure out who you are** — Before writing any code, we have a conversation about your brand, product identity, and what makes you different. This becomes the anchor for everything downstream.
-2. **Then, we translate that into specs** — Your identity gets materialized into concrete front-end visual specs (textures, typography, spatial rhythm) and backend architecture specs (data flow, reliability, technical moats). These are living documents, not frozen requirements.
-3. **We map out what to build** — The specs get decomposed into a living roadmap of milestones and atomic tasks. This roadmap is flexible — it adapts as we learn more during development.
-4. **We build with discipline** — Every task follows Red-Green TDD on isolated Git branches. Write the test first (it fails), then write the minimum code to make it pass.
-5. **We verify twice before shipping** — First, an alignment audit checks whether what we built actually matches the specs (no scope creep, no missing items). Then, a code review evaluates quality and edge-case robustness. If either finds issues, we loop back and fix before merging.
-6. **The loop is alive** — If requirements shift mid-flight (and they always do), the system cascades re-audits downstream. If we discover a fundamental contradiction during coding, we escalate back upstream to resolve it at the right level.
+1. **First, we figure out who you are** — Brand, product identity, what makes you different. This anchors everything downstream.
+2. **Then, we translate that into specs** — Front-end visual specs (textures, typography, spatial rhythm) and backend architecture specs (data flow, reliability, technical moats). Living documents, not frozen requirements.
+3. **We map out what to build** — Specs decomposed into a living roadmap of milestones and atomic tasks.
+4. **We build with discipline** — Red-Green TDD on isolated Git branches.
+5. **We verify twice before shipping** — Alignment audit (does it match the spec?) then code review (is it robust?). Issues loop back for fixes before merge.
+6. **The loop is alive** — Mid-flight requirement shifts cascade re-audits downstream. Contradictions escalate upstream.
 
 ### C. What the User Should Expect from the Agent
-- The agent will **push back on generic first ideas** and iterate toward unique solutions.
-- The agent will **challenge assumptions** constructively if it spots contradictions or hidden trade-offs.
-- Explanations will default to **high-level mental models**; technical code details are provided only when asked.
-- The agent will **ask for sign-off on specs** before building, so there are no surprises.
+- Push back on generic first ideas and iterate toward unique solutions.
+- Challenge assumptions constructively when contradictions or hidden trade-offs appear.
+- Default to high-level mental models; technical code details only when asked.
+- Ask for sign-off on specs before building — no surprises.
 
 ### D. What the User Owns
-- **Every spec artifact is theirs** — `brand-product-alignment-spec.md`, `front-end-design-spec.md`, `backend-architecture-spec.md`, `progress-map.md`. These are version-controlled, living documents the user can review, edit, and approve at any time.
-- **The user drives strategic direction** — The agent proposes, challenges, and executes, but the user makes the final call on brand positioning, visual direction, and architectural trade-offs.
+- **Every spec artifact is theirs** — `brand-product-alignment-spec.md`, `front-end-design-spec.md`, `backend-architecture-spec.md`, `progress-map.md`. Version-controlled, living documents reviewable and editable at any time.
+- **The user drives strategic direction** — The agent proposes, challenges, and executes, but the user makes the final call.
 
 ### E. Where Your Judgment Is Still Irreplaceable (The Limits of "Clean Pass")
-Be transparent: the automated loop catches a lot, but there are dimensions it **cannot evaluate for you**. A "Clean Pass" from alignment audit and code review means the code matches the spec and meets quality standards — it does **not** mean:
+Be transparent: a "Clean Pass" means the code matches the spec and meets quality standards. It does **not** mean:
 
-- **The spec itself was right** — If the brand positioning or architecture spec had a flawed assumption baked in, a Clean Pass will faithfully verify code that implements that flaw perfectly. The system checks *fidelity to the plan*, not *whether the plan was wise*.
-- **The product will resonate with real users** — Market fit, emotional resonance, and whether a feature actually solves a real problem are judgment calls no automated loop can make. That is your territory.
-- **The trade-offs are acceptable to your context** — The agent surfaces trade-offs and pushes back, but ultimately whether a particular performance/cost/complexity trade-off is worth it depends on your business reality, timeline, and risk tolerance.
-- **Edge cases beyond the spec exist** — Code review catches structural edge cases (null handling, race conditions), but domain-specific edge cases that were never articulated in the spec will not be tested.
+- **The spec itself was right** — A flawed assumption baked into the spec will be faithfully implemented. The system checks *fidelity to the plan*, not *whether the plan was wise*.
+- **The product will resonate with real users** — Market fit and emotional resonance are human judgment calls.
+- **The trade-offs are acceptable to your context** — Business reality, timeline, and risk tolerance are yours to weigh.
+- **All edge cases are covered** — Domain-specific edge cases never articulated in the spec won't be tested.
 
-**What happens if you don't bring your judgment**: The system will build exactly what the spec says, verify it passes, and ship it — even if the spec was incomplete, the positioning was off, or the feature doesn't matter to your users. Clean Pass means *internal consistency*, not *external correctness*.
-
----
-
-## 5. Mid-Development & Workflow Migration Handling
-
-If the project is **not a clean slate**, the agent must adapt the onboarding and entry point accordingly:
-
-### A. Mid-Development Entry (Existing Codebase, No Moatcraft Specs Yet)
-The user has code but no Moatcraft spec artifacts. The agent should:
-
-1. **Acknowledge the existing work** — *"I can see you've already got a codebase going. Moatcraft doesn't ask you to throw any of that away — we just need to backfill the strategic foundation so the loop has something to anchor to."*
-2. **Propose a lightweight spec backfill** — Rather than running the full discovery from scratch, the agent should offer to **infer and draft initial specs from the existing codebase** (reading `README.md`, existing component structure, API routes, styling tokens, git history) and present them for the user's review and correction.
-3. **Route to the right entry point** — Skip brand-product-alignment if the product identity is already obvious from context. If specs can be inferred, start at `progress-mapper` to decompose the next phase of work. Let the user decide what feels right.
-
-### B. Workflow Migration (Coming from Another Toolchain)
-The user has existing CI/CD, linting configs, other agent skills, or review pipelines. The agent should:
-
-1. **Respect what already works** — *"I see you've got [existing setup]. Moatcraft isn't trying to replace everything — it layers on top. Your existing CI and linting stay as they are."*
-2. **Clarify what Moatcraft adds vs. what it overlaps** — If the user already has code review automation, explain how Moatcraft's dual-axis review complements it. If they have project boards, explain how `progress-map.md` is a spec-anchored living document that works alongside their tracking tool.
-3. **Don't demand a clean migration** — The user can adopt Moatcraft skills incrementally. They can start with just `brand-product-alignment` and `front-end-designer` and add the active dev loop later when they're ready.
+**If you don't bring your judgment**: The system builds exactly what the spec says, verifies it passes, and ships it — even if the spec was incomplete or the feature doesn't matter. Clean Pass = *internal consistency*, not *external correctness*.
 
 ---
 
-## 6. After the Walkthrough
+## 5. Environment Integration (Adapted Per Project State)
 
-Once the user feels oriented, guide them to the appropriate starting point based on project state:
+After the walkthrough (or interleaved with it), the agent sets up the Moatcraft working environment. What gets set up depends on the project state detected in Section 2.
 
-- **Clean Slate**: *"Ready to start? The first step is usually figuring out your brand and product identity. Want to kick that off?"* → Route to `brand-product-alignment`.
-- **Mid-Development**: *"Since you already have code, let me draft some initial specs from what's here so we can anchor the loop. Want me to do that?"* → Route to spec backfill, then `progress-mapper`.
-- **Workflow Migration**: *"Let's figure out where Moatcraft slots into your current setup without disrupting what's already working."* → Route to whichever skill addresses the user's immediate need.
+### A. Clean Slate Setup
+
+Full scaffolding — the project is empty, so everything gets created from scratch:
+
+1. **Create spec directory**: `docs/specs/` (or project-appropriate equivalent). This is where all Moatcraft spec artifacts will live.
+2. **Scaffold empty spec templates**: Create placeholder files that signal the workflow structure:
+   - `docs/specs/brand-product-alignment-spec.md` — empty, to be filled during brand discovery.
+   - `docs/specs/front-end-design-spec.md` — empty, to be synthesized from brand spec.
+   - `docs/specs/backend-architecture-spec.md` — empty, to be synthesized from discovery.
+   - `docs/specs/progress-map.md` — empty, to be generated after specs are approved.
+3. **Git conventions**: If a git repo exists, confirm branching strategy. Moatcraft defaults to feature branches per task (`feat/task-slug`, `fix/task-slug`) with PRs into main/develop. Adapt to the user's existing branch convention if they have one.
+4. **Initial commit**: Stage the scaffolded structure and commit: `chore: scaffold moatcraft spec directory and workflow structure`.
+5. **Route to first skill**: `brand-product-alignment` — the natural starting point for a clean slate.
+
+### B. Mid-Development Setup
+
+The project has existing code but no Moatcraft specs. The agent meets the project where it is:
+
+1. **Scan the codebase** — Read `README.md`, existing component structure, API routes, styling tokens/variables, `package.json`/dependency manifests, and recent git history to understand what already exists.
+2. **Create spec directory**: Same as clean slate — `docs/specs/` (or adapt to the project's existing docs convention if one is established).
+3. **Draft inferred specs** — Rather than starting from blank templates, the agent should **pre-populate spec files with inferred content** from the codebase scan:
+   - `brand-product-alignment-spec.md` — Inferred brand positioning, target user, product differentiators based on README, marketing copy, or app metadata.
+   - `front-end-design-spec.md` — Inferred design tokens, color palette, typography, component patterns from existing CSS/styled-components/theme files.
+   - `backend-architecture-spec.md` — Inferred data models, API structure, infrastructure patterns from existing backend code.
+   - Mark every inferred section with `[INFERRED — Review Required]` so the user knows what needs their sign-off vs. what was auto-detected.
+4. **Present inferred specs for review** — *"I've drafted initial specs from your existing codebase. Take a look — correct anything that's off, and confirm what's accurate. Once you sign off, we can start the loop."*
+5. **Git conventions**: Detect existing branching strategy from git history and adapt. Don't impose a new convention if one is already in use.
+6. **Generate initial progress map** — If the user has a clear next milestone (or one is inferable from issues/TODO comments), draft an initial `progress-map.md` with the immediate phase decomposed.
+7. **Route to next step**: User reviews inferred specs → corrects and approves → `progress-mapper` for the next phase of work.
+
+### C. Workflow Migration Setup
+
+The user has existing dev tooling. Moatcraft integrates alongside, not over, what already works:
+
+1. **Inventory existing tooling** — Detect CI/CD configs (`.github/workflows/`, `Jenkinsfile`, etc.), other agent skills (`.cursor/`, `.claude/`, `.windsurf/`), linting configs (`.eslintrc`, `.prettierrc`), and project management artifacts (issues, project boards, existing roadmaps).
+2. **Clarify what Moatcraft adds vs. overlaps**:
+   - Existing CI/CD and linting → **stays as-is**. Moatcraft doesn't replace build pipelines or formatters.
+   - Existing code review automation → Moatcraft's dual-axis review (alignment audit + code quality) **complements** it. Explain the difference: Moatcraft checks *spec fidelity* and *strategic coherence*, not just lint rules and test coverage.
+   - Existing project boards/issue trackers → `progress-map.md` is a **spec-anchored living document** that works alongside external trackers. It's not a replacement for Jira/Linear/GitHub Issues — it's the strategic decomposition layer that feeds into them.
+   - Existing agent skills → Moatcraft skills can coexist. If there's overlap, discuss with the user which to use for what.
+3. **Create spec directory**: Adapt location to the project's existing doc structure. If they already have `docs/`, use `docs/specs/`. If they use a wiki or external docs, place specs where the user prefers.
+4. **Scaffold or infer specs**: Same logic as mid-development — infer from existing code, mark as `[INFERRED — Review Required]`.
+5. **Incremental adoption**: Explicitly offer: *"You don't have to adopt everything at once. We can start with just the spec layer and add the dev loop later when you're ready."* The user picks which skills to activate now.
+6. **Route to user's immediate need**: Don't force a linear path. If the user came to Moatcraft because they want better design, start with `front-end-designer`. If they want structured development, start with `progress-mapper`. Match the entry point to their motivation.
+
+---
+
+## 6. Integration Completion Criteria
+
+Onboarding integration is considered complete when:
+- [ ] Spec directory exists in the project and is committed to git.
+- [ ] Spec files exist (either empty templates for clean slate, or inferred drafts for existing projects).
+- [ ] For mid-development/migration: inferred specs have been presented for user review.
+- [ ] Git branching convention is acknowledged (either established or adapted to existing).
+- [ ] User knows which skill to invoke next and why.
+- [ ] User has expressed understanding of the workflow (even if brief — a "makes sense" is sufficient).
 
 ---
 

@@ -3,8 +3,8 @@
   "notGrouped": "bottom",
   "groupings": [
     {
-      "title": "Onboarding & Workflow Guide",
-      "description": "Transparent workflow walkthrough for new users to understand what Moatcraft does and why.",
+      "title": "Onboarding & Environment Integration",
+      "description": "Workflow walkthrough and project-adapted environment setup for new Moatcraft users.",
       "skills": [
         "moatcraft-onboarding"
       ]
