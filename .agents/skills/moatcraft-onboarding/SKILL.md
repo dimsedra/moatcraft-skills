@@ -104,7 +104,18 @@ Full scaffolding — the project is empty, so everything gets created from scrat
 
 The project has existing code but no Moatcraft specs. The agent meets the project where it is:
 
-1. **Scan the codebase** — Read `README.md`, existing component structure, API routes, styling tokens/variables, `package.json`/dependency manifests, and recent git history to understand what already exists.
+1. **Deep project discovery scan** — Broadly scan the project to understand what already exists. Sources to check (non-exhaustive — scan anything that looks like it carries project context):
+   - **Documentation**: `README.md`, `CONTRIBUTING.md`, `docs/`, wiki pages, `SPEC.md`, `DESIGN.md`, `ARCHITECTURE.md`, `ADR/` (architecture decision records), any `.md` files at root or in doc directories.
+   - **Existing specs or briefs**: Any file resembling a product spec, design brief, PRD, user stories, or requirements doc — regardless of naming convention.
+   - **Code structure**: `src/`, `app/`, `lib/`, `components/`, `pages/`, `routes/` — directory tree shape reveals architecture patterns and feature scope.
+   - **Styling & design tokens**: CSS/SCSS variables, theme files, styled-components themes, Tailwind configs, design token JSON/YAML files.
+   - **Backend & data**: API route definitions, database schemas/migrations, ORM models, `.env.example`, infrastructure configs (Docker, Terraform, serverless configs).
+   - **Dependency manifests**: `package.json`, `pyproject.toml`, `go.mod`, `Cargo.toml`, `Gemfile`, `pom.xml` — these reveal the tech stack and project maturity.
+   - **Git history**: Recent commits, branch structure, and tag/release history to understand development velocity and current phase.
+   - **Project management artifacts**: `TODO.md`, `CHANGELOG.md`, GitHub/GitLab issues, project board configs, roadmap docs.
+   - **App metadata**: `manifest.json`, `app.json`, store listing copy, SEO meta tags — these often encode brand positioning and target audience implicitly.
+   
+   The goal is to **pick up the project wherever it currently is** — understand not just the code, but the intent, the stage, and the trajectory.
 2. **Create spec directory**: Same as clean slate — `docs/specs/` (or adapt to the project's existing docs convention if one is established).
 3. **Draft inferred specs** — Rather than starting from blank templates, the agent should **pre-populate spec files with inferred content** from the codebase scan:
    - `brand-product-alignment-spec.md` — Inferred brand positioning, target user, product differentiators based on README, marketing copy, or app metadata.
@@ -120,7 +131,7 @@ The project has existing code but no Moatcraft specs. The agent meets the projec
 
 The user has existing dev tooling. Moatcraft integrates alongside, not over, what already works:
 
-1. **Inventory existing tooling** — Detect CI/CD configs (`.github/workflows/`, `Jenkinsfile`, etc.), other agent skills (`.cursor/`, `.claude/`, `.windsurf/`), linting configs (`.eslintrc`, `.prettierrc`), and project management artifacts (issues, project boards, existing roadmaps).
+1. **Deep project discovery scan + tooling inventory** — Run the same broad scan as mid-development (Section 5B, Step 1) to pick up the project's full context. Additionally, inventory the existing dev toolchain: CI/CD configs (`.github/workflows/`, `Jenkinsfile`, etc.), other agent skills (`.cursor/`, `.claude/`, `.windsurf/`), linting configs (`.eslintrc`, `.prettierrc`), testing frameworks, and project management integrations.
 2. **Clarify what Moatcraft adds vs. overlaps**:
    - Existing CI/CD and linting → **stays as-is**. Moatcraft doesn't replace build pipelines or formatters.
    - Existing code review automation → Moatcraft's dual-axis review (alignment audit + code quality) **complements** it. Explain the difference: Moatcraft checks *spec fidelity* and *strategic coherence*, not just lint rules and test coverage.
