@@ -38,21 +38,23 @@ The progress map is **a living document, not a rigid script**. Real-world engine
 
 ## Execution Steps
 
-### Step 1: Specification Ingestion (Main Agent Responsibility)
+### Step 1: Specification Ingestion & Validation (Main Agent Responsibility)
 **The main agent MUST perform specification discovery directly** by reading existing spec artifacts:
 - `brand-product-alignment-spec.md` (Brand/Product boundaries, vibe, experience moat)
 - `backend-architecture-spec.md` (Data boundaries, API contracts, technical moat)
 - `front-end-design-spec.md` (Visual hierarchy, opinionated typography, surface textures)
 
-**Completion Criterion**: All active spec artifacts are ingested, and the primary entry route (Front-End First, Back-End First, or Full-Stack) is identified.
+> **Inferred-Spec Guard Check**: Scan ingested spec artifacts for `[INFERRED — Review Required]` tags. If unverified inferred sections exist, **pause and request user sign-off** before generating roadmap tasks.
+
+**Completion Criterion**: All active spec artifacts are ingested, verified free of unreviewed inferred tags, and the primary entry route (Front-End First, Back-End First, or Full-Stack) is identified.
 
 ### Step 2: Milestone & Atomic Sub-Task Breakdown
 Decompose the ingested specifications into a hierarchical task structure:
 - **Milestones (Phases)**: High-level logical stages of development mapped to Git Feature Branches.
-- **Tasks**: Feature capabilities or architectural components linked to GitHub Issues (`Issue #123`).
+- **Tasks**: Feature capabilities or architectural components linked to an optional issue tracker (`Issue #123`, `JIRA-456`, `Linear-789`, or standalone without tracker).
 - **Sub-Tasks**: **Atomic TDD-sized units of work** (each small enough to be executed in a single `implementation-tdd` cycle, audited by `alignment-audit`, and reviewed by `code-review`).
 
-**Completion Criterion**: Complete hierarchy (Milestones ➔ Tasks ➔ Atomic Sub-Tasks) is mapped with explicit Git branch/issue assignments.
+**Completion Criterion**: Complete hierarchy (Milestones ➔ Tasks ➔ Atomic Sub-Tasks) is mapped with explicit Git branch assignments.
 
 ### Step 3: Progress Map Artifact Generation (`progress-map.md`)
 Synthesize the roadmap into `progress-map.md` at the project root:

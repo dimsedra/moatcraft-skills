@@ -53,22 +53,22 @@ Every discrepancy reported MUST connect the spec gap directly with its strategic
 1. **Plan Sources**: `progress-map.md`, `brand-product-alignment-spec.md`, `front-end-design-spec.md`, `backend-architecture-spec.md`, `implementation_plan.md`, or GitHub Issues (`#123`).
 2. **Git Comparison**: Pin base ref (`origin/main`) and capture `git diff <base-ref>...HEAD`.
 
-### Step 2: 5-Layer Context Synthesis (Main Agent)
-Synthesize objective background facts directly (do NOT delegate to sub-agents):
-1. **Product Understanding**: App purpose and high-level architecture.
-2. **Active Branch & Issue**: Feature branch name (`feat/...`) and target PR / Issue.
-3. **Current Phase Objective**: Stated sub-task goals from `progress-map.md`.
-4. **Planned Specs vs. Delivered Diff**: Complete list of planned items vs. modified files in diff.
-5. **Audit Boundary Constraints**: Focus on 100% spec completeness and deviation detection.
+### Step 2: Canonical 5-Layer Context Synthesis (Main Agent)
+Synthesize objective background facts directly into the canonical **5-Layer Context Chain**:
+1. **Product & Brand Understanding**: App purpose, target audience, and core architecture.
+2. **Active Branch & Target Scope**: Feature branch name (`feat/...`) and target milestone/issue (`#123`).
+3. **Phase Objective**: Stated sub-task goals from `progress-map.md`.
+4. **Active Task & Spec Contracts**: Planned spec requirements vs. delivered diff summary.
+5. **Execution & Harness Constraints**: Focus on 100% spec completeness and scope creep detection (`git diff origin/main...HEAD`).
 
 ---
 
 ## 3. Auditor Sub-Agent Execution
 
-Spawn a dedicated auditor sub-agent via `invoke_subagent` (`Role: "Plan Alignment Auditor"`).
+Spawn a dedicated auditor sub-agent via `invoke_subagent` (`Role: "Plan Alignment Auditor"`, `Model: "flash"` for standard diffs, `"pro"` for complex multi-file architectural changes).
 
 ### Auditor Sub-Agent Prompt Instructions
-- **Input**: 5-Layer Context Block + Approved Spec/Plan text + `git diff` output.
+- **Input**: Canonical 5-Layer Context Block + Approved Spec/Plan text + `git diff` output.
 - **Task Brief**:
   *"Act as an uncompromising Specification Auditor. Verify if 100% of promised spec items are fully met. Compare code diff against approved spec across 3 categories: 
    (a) **Fully Delivered**: Features/tasks promised in the plan that are completely implemented.

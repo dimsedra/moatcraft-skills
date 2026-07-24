@@ -27,8 +27,8 @@ This skill governs front-end design execution and visual specification. Front-en
 - **Organic Material Inference (No Fixed Anchors)**: Analyze the brand vibe, emotional lens, and core boundaries in `brand-product-alignment-spec.md` to dynamically infer the appropriate surface materials, light behaviors, and tactile physics. Do NOT rely on pre-set material templates—explore textures uniquely tailored to the specific brand identity.
 - **Opinionated Typography**: Strictly ban generic, uninspired typography (plain Inter, Roboto, Arial, or default `system-ui` without customized kerning/stylistic sets). Curate deeply opinionated font pairings matching the brand's voice.
 
-### E. Technical Extensions & Shader Moats
-- **Uncopyable Technical Moat**: Leverage custom front-end technical extensions (WebGL, Canvas GLSL shaders, physics engines, custom scroll dynamics) on isolated background layers to build technical signatures that off-the-shelf component libraries cannot replicate.
+### E. Technical Extensions & Shader Moats (Context-Driven)
+- **Uncopyable Technical Moat**: Evaluate whether the product context and brand vibe warrant bespoke technical front-end extensions (WebGL, Canvas GLSL shaders, physics engines, custom scroll dynamics). For high-immersion landing pages or creative apps, leverage isolated background shader layers; for data-dense dashboards or utility applications, focus the technical moat on precision micro-interactions, spring physics, and flawless spatial pacing.
 
 ---
 

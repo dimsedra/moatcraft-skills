@@ -14,28 +14,30 @@ This skill governs feature implementation through **Test-Driven Development (TDD
 
 ## Workflow Sequence
 
-`git checkout -b feat/...` ➔ `implementation-tdd` (Red ➔ Green Commit) ➔ `alignment-audit` ➔ `code-review` ➔ `PR Merge`
+`git checkout -b feat/...` ➔ `implementation-tdd` (Red ➔ Green) ➔ `alignment-audit` ➔ `code-review` ➔ `implementation-tdd` (Refactor Mode if needed) ➔ `PR Merge`
 
 ---
 
 ## Execution Steps
 
-### Step 1: Context, Branch & Artifact Ingestion
+### Step 1: Context, Branch & Test Harness Discovery
 **The main agent MUST perform context discovery directly**:
-1. Check active Git branch (`git branch --show-current`). Ensure development is isolated on a feature branch (e.g., `feat/feature-name` or `fix/issue-name`).
+1. Check active Git branch (`git branch --show-current`). Ensure development is isolated on a feature branch (e.g. `feat/feature-name`).
 2. Ingest project specs (`brand-product-alignment-spec.md`, `backend-architecture-spec.md`, `front-end-design-spec.md`, `progress-map.md`).
-3. Identify the local test runner setup (e.g., `vitest`, `jest`, `pytest`, `go test`).
+3. Identify the local test runner setup (e.g. `vitest`, `jest`, `pytest`, `go test`).
+   > **Test Harness Fallback**: If no test runner is configured, suggest and scaffold a standard test framework for the project's tech stack (e.g. Vitest for JS/TS, PyTest for Python) before writing tests.
 
-Synthesize a structured 5-layer context block:
-1. **Product Understanding**: Core domain purpose and system architecture.
-2. **Active Git Branch & Issue**: Current branch name (`feat/...`) and target GitHub Issue (`#123`).
-3. **Current Phase Objective**: Target sub-task from `progress-map.md`.
-4. **Target Task & Artifact Specs**: Exact requirements and contracts promised in the spec artifacts.
-5. **Test Scope & Harness Constraints**: Test runner command, test file patterns, and environment setups.
+Synthesize the canonical **5-Layer Context Chain**:
+1. **Product & Brand Understanding**: Core domain purpose, target audience, and system architecture.
+2. **Active Branch & Target Scope**: Current branch name (`feat/...`) and target issue (`#123` / optional).
+3. **Phase Objective**: Stated objective from `progress-map.md`.
+4. **Active Task & Spec Contracts**: Exact behavioral requirements promised in spec artifacts.
+5. **Execution & Harness Constraints**: Identified test runner command, test file patterns, and environment rules.
 
-**Completion Criterion**: 5-layer context block synthesized, feature branch verified, and test framework identified.
+**Completion Criterion**: 5-layer context block synthesized, feature branch verified, and test framework identified/scaffolded.
 
 ### Step 2: The Red Phase (Failing Tests & Git Red Commit)
+*(Skip this step if entering in Refactor Mode from `code-review`)*
 Before writing implementation code, write unit or integration tests strictly mapping to the requirements in the spec artifact:
 1. Create or update test files under the repository's standard test directories.
 2. Write test cases covering every behavioral requirement and contract specified in the spec artifact.
@@ -49,13 +51,23 @@ Write the minimal production code necessary to make all failing tests pass:
 1. Implement logic directly addressing the assertions written in Step 2.
 2. Focus purely on fulfilling the artifact specification. **Do not add unrequested abstractions, extra hooks, or premature optimizations.**
 3. **Run the test suite** to verify state turns **Green**.
-4. **Git Green Commit**: Stage and commit the passing implementation code (`git commit -m "feat(scope): implement [feature] (Green) - Closes #123"`).
+4. **Git Green Commit**: Stage and commit the passing implementation code (`git commit -m "feat(scope): implement [feature] (Green)"`).
 
-**Completion Criterion**: All test cases pass (**Green**), committed under a `feat(...)` Green commit signature linking the GitHub Issue.
+**Completion Criterion**: All test cases pass (**Green**), committed under a `feat(...)` Green commit signature.
+
+### Step 3.5: Refactor Mode (When Triggered from `code-review`)
+If routed back from `code-review` with code quality, Fowler smell, or edge-case findings:
+1. Keep all existing test suites passing throughout the refactoring process.
+2. Refactor code structure, variable names, modularity, or error handling to resolve `code-review` findings.
+3. Add new regression test cases if `code-review` identified unhandled edge cases or stress-test scenarios.
+4. **Run the test suite** to verify all tests remain **Green**.
+5. **Git Refactor Commit**: Stage and commit changes (`git commit -m "refactor(scope): resolve code-review findings"`).
+
+**Completion Criterion**: Code review issues resolved while keeping full test suite Green.
 
 ### Step 4: Artifact & Git Alignment Verification
 Verify implementation completeness against specs:
 1. Cross-check each requirement in `progress-map.md` and spec artifacts against the passing test suite.
 2. Verify `git status` is clean and all commits are staged on the feature branch.
 
-**Completion Criterion**: All spec requirements are verified Green, commits are cleanly logged, and the branch is ready for `alignment-audit`.
+**Completion Criterion**: All spec requirements are verified Green, commits are cleanly logged, and the branch is ready for `alignment-audit` or `code-review`.

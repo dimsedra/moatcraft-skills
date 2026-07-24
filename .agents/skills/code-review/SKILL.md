@@ -63,36 +63,38 @@ Every finding MUST connect the technical flaw or "What-If" failure directly to i
 2. Capture commit history: `git log <fixed-point>..HEAD --oneline`
 3. Capture merge-base diff: `git diff <fixed-point>...HEAD`
 
-### Step 2: 5-Layer Context Synthesis (Main Agent)
-Synthesize objective background facts directly (do NOT delegate to sub-agents):
-1. **Product Understanding**: App purpose, target users, high-level architecture.
-2. **Current Phase**: Roadmap stage or release cycle phase.
-3. **Phase Objective**: Feature set or milestone targeted in this branch.
-4. **Work Done (Work A)**: Objective summary of modifications in the diff.
-5. **Stress-Test Surface Area**: Specific boundary conditions and realistic failure scenarios relevant to Work A.
+### Step 2: Canonical 5-Layer Context Synthesis (Main Agent)
+Synthesize objective background facts directly into the canonical **5-Layer Context Chain**:
+1. **Product & Brand Understanding**: App purpose, target audience, and core architecture.
+2. **Active Branch & Target Scope**: Feature branch name (`feat/...`) and target milestone/issue (`#123`).
+3. **Phase Objective**: Stated objective from `progress-map.md`.
+4. **Active Task & Spec Contracts**: Objective summary of modifications in diff (Work A).
+5. **Execution & Harness Constraints**: Stress-test boundary conditions and diff range (`git diff <fixed-point>...HEAD`).
 
 ---
 
 ## 3. Parallel Sub-Agent Execution
 
-Invoke two technical sub-agents concurrently via `invoke_subagent` in a single tool call (`Subagents: [...]`). Inject the 5-Layer Context Chain into both sub-agents upfront.
+Invoke two technical sub-agents concurrently via `invoke_subagent` in a single tool call (`Subagents: [...]`). Inject the canonical 5-Layer Context Chain into both sub-agents upfront.
 
 ### A. Code Health & Maintainability Sub-Agent
+- **Model**: `"flash"` (fast, token-efficient analysis of code health patterns).
 - **Role Brief**: *"Act as a relentlessly skeptical Code Health Auditor. Do NOT give benefit of the doubt. Assume code has hidden maintainability debt."*
-- **Input**: Context Chain + `git diff` + Fowler Code Smells Baseline.
+- **Input**: Canonical 5-Layer Context Chain + `git diff` + Fowler Code Smells Baseline.
 - **Checklist Focus**:
   - *Fowler Smells*: Mysterious Name, Duplicated Code, Feature Envy, Primitive Obsession, Repeated Switches, Shotgun Surgery, Divergent Change, Speculative Generality, Message Chains, Middle Man.
   - *Architecture & Cleanliness*: Single Responsibility violations, tight coupling, hardcoded values, missing type safety.
-- **Output Requirement**: Findings grouped by Severity Level (🔴 Critical ➔ ⚪ Low) with explicit "WHY" (Maintainability Impact) for each item.
+- **Output Requirement**: Findings grouped by Severity Level (🔴 Critical ➔ ⚪ Low) with explicit "WHY" (Maintainability Impact) for each item. Keep concise (<500 words).
 
 ### B. Contextual "What-If" Stress-Testing Sub-Agent
+- **Model**: `"pro"` (deep reasoning model for complex edge-case & failure state analysis).
 - **Role Brief**: *"Act as an adversarial Stress-Test Specialist. Your goal is to find where Work A breaks when subjected to realistic failure scenario B."*
-- **Input**: Context Chain + `git diff` + Feature Context (Work A).
+- **Input**: Canonical 5-Layer Context Chain + `git diff` + Feature Context (Work A).
 - **Checklist Focus**:
   - Formulate 3-5 realistic **"What-If" scenarios** specifically tailored to Work A: *"If user/system does B, does A break?"*
   - *Exception & Boundary Recovery*: Null/undefined payload fields, boundary inputs, timeouts, network drops.
   - *Concurrency & State Machine Invalidation*: Concurrent mutations, race conditions, stale cache reads, unclosed resources.
-- **Output Requirement**: Findings grouped by Severity Level (🔴 Critical ➔ ⚪ Low) with explicit "What-If" scenario descriptions and "WHY" (Systemic Risk) for each item.
+- **Output Requirement**: Findings grouped by Severity Level (🔴 Critical ➔ ⚪ Low) with explicit "What-If" scenario descriptions and "WHY" (Systemic Risk) for each item. Keep concise (<500 words).
 
 ---
 
