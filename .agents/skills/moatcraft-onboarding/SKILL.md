@@ -13,12 +13,23 @@ This skill is **an internal agent guide**, not a user-facing questionnaire. It i
 
 Activate this skill automatically when:
 - Moatcraft skills are **first installed** in a new project (no prior spec artifacts exist).
+- Moatcraft skills are installed into a **project already in progress** (existing code, configs, or partial specs detected).
 - A user **asks how the Moatcraft workflow works** or what the skills do.
 - A user seems confused about the development loop or skill invocation order.
 
 ---
 
-## 2. Onboarding Tone & Approach
+## 2. Project State Detection
+
+Before beginning the walkthrough, the agent should silently assess the project state by scanning for existing signals:
+
+- **Clean Slate** (no `src/`, no `package.json`/`pyproject.toml`/`go.mod`, no existing spec files): Full onboarding from Phase 1 (brand-product-alignment).
+- **Mid-Development** (existing source code, dependencies, possibly partial docs/specs, git history): The user is adopting Moatcraft into a project that already has momentum. The workflow needs to meet them where they are, not demand they start over.
+- **Workflow Migration** (existing CI/CD configs, other agent skill files, `.cursor/`, `.claude/`, custom linting/review pipelines): The user is coming from another workflow or toolchain. Acknowledge what they already have and explain how Moatcraft layers in — not replaces — their existing setup where possible.
+
+---
+
+## 3. Onboarding Tone & Approach
 
 - **Use `explain-and-teach` principles**: High-level human abstractions, intuitive mental models, zero jargon dumps. The user should walk away feeling they genuinely understand the workflow, not that they were lectured at.
 - **Conversational, not ceremonial**: This is not a contract signing. It is a casual, transparent walkthrough — like a co-founder explaining the team's development philosophy to a new collaborator over coffee.
@@ -26,7 +37,7 @@ Activate this skill automatically when:
 
 ---
 
-## 3. What to Cover (High-Level Walkthrough)
+## 4. What to Cover (High-Level Walkthrough)
 
 When the user accepts the walkthrough, explain the following concepts using natural human logic. Do NOT recite skill names as a dry list — weave them into a narrative of how a product gets built:
 
@@ -65,14 +76,36 @@ Be transparent: the automated loop catches a lot, but there are dimensions it **
 
 ---
 
-## 4. After the Walkthrough
+## 5. Mid-Development & Workflow Migration Handling
 
-Once the user feels oriented, guide them to the natural starting point:
-- *"Ready to start? The first step is usually figuring out your brand and product identity. Want to kick that off?"*
-- Route to `brand-product-alignment` or `agentic-dev-loop` based on user preference.
+If the project is **not a clean slate**, the agent must adapt the onboarding and entry point accordingly:
+
+### A. Mid-Development Entry (Existing Codebase, No Moatcraft Specs Yet)
+The user has code but no Moatcraft spec artifacts. The agent should:
+
+1. **Acknowledge the existing work** — *"I can see you've already got a codebase going. Moatcraft doesn't ask you to throw any of that away — we just need to backfill the strategic foundation so the loop has something to anchor to."*
+2. **Propose a lightweight spec backfill** — Rather than running the full discovery from scratch, the agent should offer to **infer and draft initial specs from the existing codebase** (reading `README.md`, existing component structure, API routes, styling tokens, git history) and present them for the user's review and correction.
+3. **Route to the right entry point** — Skip brand-product-alignment if the product identity is already obvious from context. If specs can be inferred, start at `progress-mapper` to decompose the next phase of work. Let the user decide what feels right.
+
+### B. Workflow Migration (Coming from Another Toolchain)
+The user has existing CI/CD, linting configs, other agent skills, or review pipelines. The agent should:
+
+1. **Respect what already works** — *"I see you've got [existing setup]. Moatcraft isn't trying to replace everything — it layers on top. Your existing CI and linting stay as they are."*
+2. **Clarify what Moatcraft adds vs. what it overlaps** — If the user already has code review automation, explain how Moatcraft's dual-axis review complements it. If they have project boards, explain how `progress-map.md` is a spec-anchored living document that works alongside their tracking tool.
+3. **Don't demand a clean migration** — The user can adopt Moatcraft skills incrementally. They can start with just `brand-product-alignment` and `front-end-designer` and add the active dev loop later when they're ready.
 
 ---
 
-## 5. Ongoing Reference
+## 6. After the Walkthrough
+
+Once the user feels oriented, guide them to the appropriate starting point based on project state:
+
+- **Clean Slate**: *"Ready to start? The first step is usually figuring out your brand and product identity. Want to kick that off?"* → Route to `brand-product-alignment`.
+- **Mid-Development**: *"Since you already have code, let me draft some initial specs from what's here so we can anchor the loop. Want me to do that?"* → Route to spec backfill, then `progress-mapper`.
+- **Workflow Migration**: *"Let's figure out where Moatcraft slots into your current setup without disrupting what's already working."* → Route to whichever skill addresses the user's immediate need.
+
+---
+
+## 7. Ongoing Reference
 
 If at any point during development the user asks *"Why are we doing this?"*, *"What's the point of this audit?"*, or *"How does this fit into the bigger picture?"*, use `explain-and-teach` to answer — anchoring the explanation back to the workflow mental model established during onboarding.
