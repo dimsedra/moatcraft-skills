@@ -91,7 +91,7 @@ flowchart TD
 | **`progress-mapper`** | Roadmap | Ingests brand/technical specs and decomposes them into a living roadmap of Milestones, Tasks, and atomic TDD sub-tasks. | `progress-map.md` |
 | **`implementation-tdd`** | Execution | Executes artifact-driven Red-Green TDD focusing strictly on functional compliance without premature optimization. | Passing Test Suite & Code |
 | **`alignment-audit`** | Audit | Upstream auditor running before code review to catch plan deviations, missing deliverables, or scope creep, categorized by urgency level with explicit "WHY" impact rationales. | `alignment-audit-report.md` |
-| **`code-review`** | Quality | Spawns parallel sub-agents to conduct two-axis review (Standards & Spec) targeting code smells and edge-case robustness, categorized by urgency level with explicit "WHY" rationales. | Dual-Axis Review Report |
+| **`code-review`** | Quality | Spawns parallel sub-agents evaluating Code Health & Runtime Robustness (Fowler smells, edge cases, error recovery), categorized by urgency level with explicit "WHY" rationales. | Dual-Axis Review Report |
 | **`explain-and-teach`** | Cross-Cutting | Delivers adaptive, systemic explanations (Trade-offs, Ripple Effects, Mental Models) tailored for systemic thinkers. | Direct Response |
 | **`agentic-dev-loop`** | Router | Orchestrates the continuous feedback loop between strategic discovery, roadmap planning, TDD execution, auditing, and review. | Loop Orchestration |
 

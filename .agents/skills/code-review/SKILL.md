@@ -1,11 +1,13 @@
 ---
 name: code-review
-description: Conduct a product-aware, two-axis code review (Standards and Spec) evaluating code quality, edge-case robustness, and domain alignment comparing HEAD against a fixed point using parallel sub-agents. Categorize findings by urgency/importance level with explicit "WHY" rationales. Use when reviewing feature branches, Pull Requests (PRs), work-in-progress, or changes since a commit, tag, or branch.
+description: Conduct a rigorous code quality and edge-case robustness review comparing HEAD against a fixed point using parallel sub-agents. Categorize findings by urgency/importance level with explicit "WHY" rationales. Use when reviewing feature branches, Pull Requests (PRs), work-in-progress, or changes since a commit, tag, or branch.
 ---
 
-# Code Review (Product-Aware Two-Axis Review)
+# Code Review (Code Quality & Edge-Case Robustness Review)
 
-This skill performs a product-aware, dual-axis code review evaluating **Code Quality & Robustness** alongside **Spec & Domain Alignment** for feature branches and Pull Requests. 
+This skill performs a rigorous code review focusing on **Code Health & Maintainability** alongside **Edge-Case & Runtime Robustness** for feature branches and Pull Requests.
+
+> **Separation of Concerns Note:** Plan fidelity, missing spec deliverables, and scope creep are audited upstream by `alignment-audit`. `code-review` focuses strictly on code quality, architecture smells, and technical robustness.
 
 Findings are strictly classified by **Urgency & Importance** and mandate an explicit **"WHY" (Systemic Rationale & Consequence)** for every issue detected.
 
@@ -13,27 +15,26 @@ Findings are strictly classified by **Urgency & Importance** and mandate an expl
 
 ## 1. Operating Foundations
 
-### A. Dual-Axis Review Model
-A change can succeed on one axis and fail on the other:
-- **Standards Pass, Spec Fail**: Code is clean and idiomatic, but violates domain rules or fails edge cases.
-- **Spec Pass, Standards Fail**: Feature satisfies business requirements, but introduces architectural smells or fragile error handling.
+### A. Dual-Axis Technical Focus
+- **Axis 1: Code Health & Maintainability**: Refactoring smells (Fowler smells), DRY violations, naming clarity, modularity, and technical debt.
+- **Axis 2: Edge-Case & Runtime Robustness**: Unhandled exceptions, boundary conditions, async race conditions, resource leaks, and state invalidation.
 
 ### B. Urgency & Severity Matrix
 
 | Level | Severity Label | Definition & Threshold | PR Gate Action |
 | :--- | :--- | :--- | :--- |
-| **🔴 Level 1** | **Critical (Blocker)** | Security vulnerabilities, data loss risks, unhandled crash conditions in primary flows, or breaking API changes. | **Merge Blocker**: Must fix immediately before PR approval. |
-| **🟡 Level 2** | **High (Major)** | Major Fowler architectural smells, race conditions, unhandled timeouts/error swallowing, or severe performance bottlenecks. | **Action Required**: Should fix before merge unless explicitly waived. |
-| **🔵 Level 3** | **Medium (Moderate)** | Standard code smells (duplicated logic, primitive obsession), minor edge-case gaps, or missing documentation. | **Recommended**: Can merge with follow-up task logged. |
+| **🔴 Level 1** | **Critical (Blocker)** | Security vulnerabilities, data loss risks, unhandled crash conditions in primary flows, or memory leaks. | **Merge Blocker**: Must fix immediately before PR approval. |
+| **🟡 Level 2** | **High (Major)** | Major Fowler architectural smells, subtle race conditions, unhandled timeouts/error swallowing, or severe performance bottlenecks. | **Action Required**: Should fix before merge unless explicitly waived. |
+| **🔵 Level 3** | **Medium (Moderate)** | Standard code smells (duplicated logic, primitive obsession), minor edge-case gaps, or missing inline documentation. | **Recommended**: Can merge with follow-up task logged. |
 | **⚪ Level 4** | **Low (Advisory)** | Naming clarity, micro-suggestions, or style polish. | **Advisory**: Optional polish, does not delay merge. |
 
 ### C. Mandatory Finding Schema (The "WHY" Requirement)
-Every finding MUST connect the technical code detail directly with its high-level systemic/user impact:
+Every finding MUST connect technical code detail directly with its high-level systemic impact:
 
 ```markdown
 - **[Severity Badge] [File Location & Line Number]**: Brief Summary
   - **The "WHY" (Systemic Impact)**: Clear, non-jargon explanation of why this matters and what happens systemically if left unaddressed.
-  - **Root Cause / Code Detail**: The specific code smell, missing edge-case check, or spec mismatch.
+  - **Root Cause / Code Detail**: The specific code smell, missing edge-case check, or state invalidation risk.
   - **Remediation Action**: Concrete code fix or refactoring steps.
 ```
 
@@ -58,22 +59,22 @@ Synthesize objective background facts directly (do NOT delegate to sub-agents):
 
 ## 3. Parallel Sub-Agent Execution
 
-Invoke two sub-agents concurrently via `invoke_subagent` in a single tool call (`Subagents: [...]`). Inject the 5-Layer Context Chain into both sub-agents upfront.
+Invoke two technical sub-agents concurrently via `invoke_subagent` in a single tool call (`Subagents: [...]`). Inject the 5-Layer Context Chain into both sub-agents upfront.
 
-### A. Standards & Quality Sub-Agent
-- **Input**: Context Chain + `git diff` + Fowler Smells & Edge-Case Checklist.
+### A. Code Health & Maintainability Sub-Agent
+- **Input**: Context Chain + `git diff` + Fowler Code Smells Baseline.
 - **Checklist Focus**:
-  - *Fowler Smells*: Mysterious Name, Duplicated Code, Feature Envy, Primitive Obsession, Shotgun Surgery, Divergent Change.
-  - *Robustness*: Unhandled exceptions/nulls, race conditions, stale cache reads, unclosed resources, silent error swallowing.
-- **Output Requirement**: Findings grouped by Severity Level (🔴 Critical ➔ ⚪ Low) with explicit "WHY" (Systemic Impact) for each item.
+  - *Fowler Smells*: Mysterious Name, Duplicated Code, Feature Envy, Primitive Obsession, Repeated Switches, Shotgun Surgery, Divergent Change, Speculative Generality, Message Chains, Middle Man.
+  - *Architecture & Cleanliness*: Single Responsibility violations, tight coupling, hardcoded values, missing type safety.
+- **Output Requirement**: Findings grouped by Severity Level (🔴 Critical ➔ ⚪ Low) with explicit "WHY" (Systemic/Maintainability Impact) for each item.
 
-### B. Spec & Product Alignment Sub-Agent
-- **Input**: Context Chain + `git diff` + Approved Spec/PRD files.
+### B. Edge-Case & Runtime Robustness Sub-Agent
+- **Input**: Context Chain + `git diff` + Robustness Checklist.
 - **Checklist Focus**:
-  - Missing or partial spec requirements.
-  - Scope creep / unrequested behavior.
-  - Logic that breaks domain intent or user flows.
-- **Output Requirement**: Findings grouped by Severity Level (🔴 Critical ➔ ⚪ Low) with quoted spec lines and explicit "WHY" (User/Business Impact) for each item.
+  - *Exception & Error Recovery*: Unhandled exceptions, null/undefined dereferences, missing payload fields, network timeouts, silent error swallowing.
+  - *Concurrency & State*: Race conditions, stale cache reads, unclosed sockets/streams, state machine invalidations.
+  - *Resource & Performance*: Unclosed event listeners, memory leaks, inefficient loops.
+- **Output Requirement**: Findings grouped by Severity Level (🔴 Critical ➔ ⚪ Low) with explicit "WHY" (Systemic/Runtime Risk) for each item.
 
 ---
 
@@ -91,13 +92,13 @@ Synthesize findings into the final review report:
 
 ---
 
-## 2. Standards & Robustness Review
+## 2. Code Health & Maintainability Review
 
 ### 🔴 Critical (Blockers)
-- **`src/services/payment.ts:L45`**: Unhandled Network Timeout
-  - **The "WHY" (Systemic Impact)**: Leaves transactions in zombie state, causing client/DB data drift and lost revenue.
-  - **Code Detail**: Fetch call lacks abort controller or timeout handler.
-  - **Action**: Wrap call with `AbortSignal.timeout(5000)` and handle `TimeoutError`.
+- **`src/services/payment.ts:L45`**: Mysterious Name & Tight Coupling
+  - **The "WHY" (Systemic Impact)**: Increases cognitive overhead and risk of regression during future maintenance.
+  - **Code Detail**: Variable `x` obscures payment token state.
+  - **Action**: Rename to `paymentToken` and encapsulate logic.
 
 ### 🟡 High (Major Issues)
 ...
@@ -110,15 +111,18 @@ Synthesize findings into the final review report:
 
 ---
 
-## 3. Spec & Domain Review
+## 3. Edge-Case & Runtime Robustness Review
 
-### 🔴 Critical (Spec Blockers)
+### 🔴 Critical (Runtime Blockers)
+- **`src/api/checkout.ts:L88`**: Unhandled Network Timeout
+  - **The "WHY" (Systemic Impact)**: Leaves transactions in zombie state, causing client/DB data drift and lost revenue.
+  - **Code Detail**: Fetch call lacks abort controller or timeout handler.
+  - **Action**: Wrap call with `AbortSignal.timeout(5000)` and handle `TimeoutError`.
+
+### 🟡 High (Major Robustness Risks)
 ...
 
-### 🟡 High (Major Spec Drift)
-...
-
-### 🔵 Medium (Moderate Spec Gaps)
+### 🔵 Medium (Moderate Edge Cases)
 ...
 
 ### ⚪ Low (Minor Advisory)
