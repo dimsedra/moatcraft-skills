@@ -1,23 +1,47 @@
 ---
 name: code-review
-description: Conduct a product-aware, two-axis code review (Standards and Spec) evaluating code quality, edge-case robustness, and domain alignment comparing HEAD against a fixed point using parallel sub-agents. Use when reviewing feature branches, Pull Requests (PRs), work-in-progress, or changes since a commit, tag, or branch.
+description: Conduct a product-aware, two-axis code review (Standards and Spec) evaluating code quality, edge-case robustness, and domain alignment comparing HEAD against a fixed point using parallel sub-agents. Categorize findings by urgency/importance level with explicit "WHY" rationales. Use when reviewing feature branches, Pull Requests (PRs), work-in-progress, or changes since a commit, tag, or branch.
 ---
 
 # Code Review (Product-Aware Two-Axis Review)
 
-This skill performs a rigorous code review focusing on **code quality**, **edge-case robustness**, and **domain correctness** for feature branches and Pull Requests (PRs). Because sub-agents start with a blank context window, the main agent synthesizes a **5-Layer Context Chain** before spawning parallel sub-agents to evaluate the diff across **Standards** and **Spec** axes.
+This skill performs a rigorous code review focusing on **code quality**, **edge-case robustness**, and **domain correctness** for feature branches and Pull Requests (PRs). Findings are strictly formatted by **Urgency & Importance Level** and include an explicit **"WHY" (Systemic Rationale & Consequence)** for every issue detected.
+
+Because sub-agents start with a blank context window, the main agent synthesizes a **5-Layer Context Chain** before spawning parallel sub-agents to evaluate the diff across **Standards** and **Spec** axes.
+
+---
 
 ## Workflow Sequence
 
 `alignment-audit` ➔ `code-review` ➔ `PR Approval / Merge`
 
-> **Upstream Dependency:** Run the `alignment-audit` skill prior to `code-review` to confirm that all changes match approved plans and PRDs without scope creep. Once alignment is verified, execute `code-review` to evaluate code quality, edge-case robustness, and standards.
+> **Upstream Dependency:** Run the `alignment-audit` skill prior to `code-review` to confirm that all changes match approved plans and PRDs without scope creep. Once plan alignment is verified, execute `code-review` to evaluate code quality, edge-case robustness, and standards.
 
-## Why Two Axes
+---
 
-A code change can succeed on one axis and fail on the other:
-- **Standards Pass, Spec Fail**: Code is clean and robust according to conventions, but fails edge cases or implements incorrect product logic.
-- **Spec Pass, Standards Fail**: Code satisfies product requirements, but introduces fragile edge cases, poor exception handling, or maintainability smells.
+## Urgency & Importance Classification Matrix
+
+Every finding identified during code review MUST be classified into one of the following 4 levels:
+
+| Level | Severity Label | Definition & Threshold | PR Impact |
+| :--- | :--- | :--- | :--- |
+| **🔴 Level 1** | **Critical (Blocker)** | Security vulnerabilities, data loss/corruption risks, unhandled crash conditions in primary flows, breaking API contract changes without migration, or severe domain logic bugs. | **Merge Blocker**: Must fix immediately before PR approval. |
+| **🟡 Level 2** | **High (Major)** | Significant Fowler architectural smells, subtle race conditions, unhandled edge-case error states (e.g. unhandled timeouts, silent swallowing), or severe performance bottlenecks. | **Action Required**: Should fix before merge unless explicitly waived. |
+| **🔵 Level 3** | **Medium (Moderate)** | Standard code smells (duplicated logic, primitive obsession, feature envy), minor edge-case gaps, missing documentation on complex algorithms, or sub-optimal data patterns. | **Recommended**: Can merge with follow-up task or quick cleanup. |
+| **⚪ Level 4** | **Low (Minor / Advisory)** | Stylistic micro-suggestions, variable naming clarity, minor refactoring polish, or non-blocking optimization hints. | **Advisory**: Optional polish, does not delay merge. |
+
+---
+
+## Mandatory Finding Schema (The "WHY" Requirement)
+
+Every finding reported MUST articulate the **"WHY" (Systemic Rationale & Consequence)** — bridging the technical code detail with its high-level impact on user experience, system stability, security, or maintainability:
+
+```markdown
+- **[Severity Badge] [File Location & Line Number]**: Brief Summary
+  - **The "WHY" (Systemic Impact)**: Clear, jargon-free explanation of why this matters and what happens systemically if left unaddressed.
+  - **Root Cause / Code Detail**: The specific code smell, missing edge-case check, or spec mismatch.
+  - **Remediation Action**: Concrete code fix or refactoring steps.
+```
 
 ---
 
@@ -60,18 +84,18 @@ Synthesize a neutral, objective **5-Layer Context Chain** to feed into both sub-
 #### B. Standards & Robustness Sources
 1. Documented repository standards (`CODING_STANDARDS.md`, `CONTRIBUTING.md`, `STYLE_GUIDE.md`).
 2. The Fowler Smell Baseline & Edge-Case Robustness Checklist (injected into Standards sub-agent):
-   - **Mysterious Name**: Function, variable, or type name does not reveal domain intent. → Rename clearly.
-   - **Duplicated Code**: Identical logic shape across multiple hunks or files. → Extract shared helper.
-   - **Feature Envy**: Method reaches into another object's data more than its own. → Move method to target object.
-   - **Data Clumps**: Group of fields/params traveling together consistently. → Bundle into value object.
-   - **Primitive Obsession**: Primitive standing in for a domain concept. → Wrap in domain type.
-   - **Repeated Switches**: Duplicate `switch`/`if` cascades across change. → Replace with map or polymorphism.
-   - **Shotgun Surgery**: Single logical change forces scattered edits across many files. → Co-locate related modules.
-   - **Divergent Change**: Single module edited for multiple unrelated reasons. → Split by single responsibility.
-   - **Speculative Generality**: Unrequested hooks, params, or abstractions. → Remove and inline.
-   - **Message Chains**: Deep `a.b().c().d()` navigation. → Delegate walk behind single method.
-   - **Middle Man**: Class/function mostly delegating onward. → Call real target direct.
-   - **Refused Bequest**: Subclass overriding or ignoring most inherited behavior. → Use composition.
+   - **Mysterious Name**: Function, variable, or type name does not reveal domain intent.
+   - **Duplicated Code**: Identical logic shape across multiple hunks or files.
+   - **Feature Envy**: Method reaches into another object's data more than its own.
+   - **Data Clumps**: Group of fields/params traveling together consistently.
+   - **Primitive Obsession**: Primitive standing in for a domain concept.
+   - **Repeated Switches**: Duplicate `switch`/`if` cascades across change.
+   - **Shotgun Surgery**: Single logical change forces scattered edits across many files.
+   - **Divergent Change**: Single module edited for multiple unrelated reasons.
+   - **Speculative Generality**: Unrequested hooks, params, or abstractions.
+   - **Message Chains**: Deep `a.b().c().d()` navigation.
+   - **Middle Man**: Class/function mostly delegating onward.
+   - **Refused Bequest**: Subclass overriding or ignoring most inherited behavior.
    - **Edge-Case & Robustness Checklist**:
      - *Null/Undefined & Unhandled Exceptions*: Boundary inputs, network timeouts, missing payload fields.
      - *State Machine Invalidation*: Concurrent mutations, race conditions, stale cache reads.
@@ -87,21 +111,25 @@ Include:
 - The 5-Layer Context Chain from Step 2.
 - Full `git diff` output and commit list.
 - Repo standards + Fowler Smell Baseline + Edge-Case & Robustness Checklist.
-- Task brief: *"Analyze code quality and robustness per file/hunk: (a) Documented standard breaches (cite file + rule); (b) Code smells (name smell + quote hunk); (c) Edge-case risks, unhandled exceptions, or state invalidation risks. Distinguish hard breaches from judgement calls. Skip tooling-enforced items. Under 400 words."*
+- Task brief:
+  *"Analyze code quality and robustness per file/hunk. Group findings by Severity: 🔴 Critical (Blocker), 🟡 High (Major), 🔵 Medium (Moderate), ⚪ Low (Minor). For EVERY finding, you MUST include: (1) Location & Summary; (2) The 'WHY' (Systemic Rationale & Consequence — explain why this matters systemically and what happens if unaddressed); (3) Code detail; (4) Actionable fix. Skip tooling-enforced items. Under 500 words."*
 
 #### B. Spec & Product Sub-Agent Prompt
 Include:
 - The 5-Layer Context Chain from Step 2.
 - Full `git diff` output and commit list.
 - Full text or path of the Spec / Issue / PRD.
-- Task brief: *"Analyze product alignment: (a) Missing or partial spec requirements; (b) Unrequested behavior / scope creep; (c) Implemented logic that breaks domain intent or user flow. Quote spec lines for each finding. Under 400 words."* *(If spec is missing, report "No spec available".)*
+- Task brief:
+  *"Analyze product alignment: (a) Missing or partial spec requirements; (b) Unrequested behavior / scope creep; (c) Implemented logic that breaks domain intent or user flow. Group findings by Severity: 🔴 Critical (Blocker), 🟡 High (Major), 🔵 Medium (Moderate), ⚪ Low (Minor). Quote spec lines for each finding. For EVERY finding, explicitly state the 'WHY' (Systemic & User Flow Impact). Under 500 words."* *(If spec is missing, report "No spec available".)*
 
 **Completion Criterion**: Both sub-agents launched concurrently and responses received.
 
-### Step 5: Aggregation & Dual Reporting
-Present findings verbatim or lightly formatted under separate headers:
+### Step 5: Aggregation & Structured Dual Reporting
+Synthesize sub-agent outputs into a structured dual-axis report sorted by Urgency/Importance Level:
 
 ```markdown
+# Code Review Report
+
 ## 1. Product & PR Context
 - **Product**: [Layer 1 Summary]
 - **Target PR / Branch**: `feat/feature-name` -> `main`
@@ -112,21 +140,47 @@ Present findings verbatim or lightly formatted under separate headers:
 ---
 
 ## 2. Standards & Robustness Review
-[Standards Sub-Agent Output]
+
+### 🔴 Critical (Blockers)
+- **`path/to/file.ts:L45`**: [Brief Summary]
+  - **The "WHY" (Systemic Impact)**: [Consequence if left unaddressed]
+  - **Detail**: [Code smell / unhandled exception]
+  - **Action**: [Remediation steps]
+
+### 🟡 High (Major Issues)
+- ...
+
+### 🔵 Medium (Moderate Issues)
+- ...
+
+### ⚪ Low (Minor / Advisory)
+- ...
 
 ---
 
 ## 3. Spec & Domain Review
-[Spec Sub-Agent Output]
+
+### 🔴 Critical (Spec Blockers)
+- ...
+
+### 🟡 High (Major Spec Drift)
+- ...
+
+### 🔵 Medium (Moderate Spec Gaps)
+- ...
+
+### ⚪ Low (Minor Advisory)
+- ...
 
 ---
 
 ## 4. Summary & PR Gate Recommendation
-- **Standards & Robustness Axis**: X findings (Worst: [Brief description or "None"])
-- **Spec & Domain Axis**: Y findings (Worst: [Brief description or "None"])
-- **PR Decision**: [APPROVE / REQUEST CHANGES / RE-ROUTE TO TDD]
+- **Critical Findings**: N (Must resolve before merge)
+- **High Findings**: N (Should resolve before merge)
+- **Medium/Low Findings**: N (Advisory / Follow-up)
+- **PR Gate Decision**: [🟢 APPROVE | 🟡 REQUEST CHANGES | 🔴 RE-ROUTE TO TDD]
 ```
 
-Do not merge or re-rank findings across axes.
+Do not merge or re-rank findings across axes, but ensure every finding is classified by Urgency Level and includes its "WHY" rationale.
 
-**Completion Criterion**: Dual-axis report presented side-by-side with 5-layer context header and PR decision.
+**Completion Criterion**: Dual-axis report presented with 5-layer context header, severity-grouped findings with "WHY" explanations, and PR decision.

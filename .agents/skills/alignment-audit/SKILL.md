@@ -1,11 +1,13 @@
 ---
 name: alignment-audit
-description: Conduct a plan-and-spec alignment audit using auditor sub-agents to verify that implemented code diffs on feature branches match approved plans/PRDs/specs without scope creep or missing items before PR merge. Use when verifying work against an implementation plan or spec.
+description: Conduct a plan-and-spec alignment audit using auditor sub-agents to verify that implemented code diffs match approved plans/PRDs/specs. Findings are categorized by urgency/importance level with explicit "WHY" (strategic & product impact) rationales. Use before PR merge.
 ---
 
 # Alignment Audit
 
-This skill acts as an upstream plan & specification auditor executed **before** `code-review`. It verifies whether the actual code diff on a feature branch or Pull Request matches the approved implementation plan, PRD, or specification artifacts.
+This skill acts as an upstream plan & specification auditor executed **before** `code-review`. It verifies whether the actual code diff on a feature branch or Pull Request matches approved implementation plans, PRDs, or specification artifacts. 
+
+Findings are strictly formatted by **Urgency & Importance Level** and include an explicit **"WHY" (Strategic & Product Impact)** for every discrepancy identified.
 
 > **Scope Note:** This skill ignores code quality, style, and refactoring smells (which are evaluated by `code-review`). It focuses strictly on **Plan Fidelity**, **Missing Deliverables**, and **Unapproved Deviations/Scope Creep**.
 
@@ -14,6 +16,32 @@ This skill acts as an upstream plan & specification auditor executed **before** 
 ## Execution Workflow Sequence
 
 `git checkout -b feat/...` ➔ `implementation-tdd` (Red ➔ Green) ➔ `alignment-audit` ➔ `code-review` ➔ `PR Merge`
+
+---
+
+## Urgency & Importance Classification Matrix
+
+Every discrepancy identified during alignment audit MUST be classified into one of the following 4 levels:
+
+| Level | Severity Label | Definition & Threshold | Audit Gate Impact |
+| :--- | :--- | :--- | :--- |
+| **🔴 Level 1** | **Critical (Spec Blocker)** | Core feature promised in spec is completely omitted, unapproved architectural pivot introduced, or scope creep that violates security/brand identity boundaries. | **Gate Status: DEVIATION DETECTED (Blocker)**. Must resolve or revert before proceeding. |
+| **🟡 Level 2** | **High (Significant Drift)** | Partial implementation of key requirement, unannounced public interface/schema change, or unapproved complexity added without spec update. | **Gate Status: DEVIATION DETECTED**. Requires resolution or spec sign-off. |
+| **🔵 Level 3** | **Medium (Minor Gap / Acceptable Refactor)** | Secondary requirement deferred, minor UI copy/text variation, or harmless utility co-located in diff. | **Gate Status: PASS WITH WARNING**. Can proceed with follow-up task logged. |
+| **⚪ Level 4** | **Low (Advisory / Spec Clarification)** | Ambiguity in plan vs. diff that requires user clarification rather than code rollback. | **Gate Status: PASSED (Advisory)**. Informative only. |
+
+---
+
+## Mandatory Finding Schema (The "WHY" Requirement)
+
+Every missing item, incomplete feature, or unplanned deviation reported MUST articulate the **"WHY" (Strategic & Product Impact)** — explaining *why* the discrepancy matters to product vision, user experience, system architecture, or brand positioning:
+
+```markdown
+- **[Severity Badge] [Plan Section / Diff Hunk]**: Discrepancy Summary
+  - **The "WHY" (Strategic & Product Impact)**: Clear, non-jargon explanation of why this discrepancy matters, what user experience or system goal is compromised, and the business/technical risk of leaving it as-is.
+  - **Spec Expectation vs. Diff Reality**: Exact quote from spec vs. what is actually present in `git diff`.
+  - **Alignment Action**: Concrete step to achieve alignment (e.g. implement missing logic, revert unapproved code, or update spec artifact with user sign-off).
+```
 
 ---
 
@@ -55,12 +83,19 @@ Inject:
    (a) **Fully Delivered**: Features/tasks promised in the plan that are completely implemented.
    (b) **Missing or Partial**: Tasks explicitly promised in the plan that are missing or incomplete in the diff.
    (c) **Unplanned Deviations & Scope Creep**: Modifications, additions, or architectural changes present in the diff that were NEVER mentioned or approved in the plan.
-   Quote exact lines from the plan artifact for every finding. Do NOT comment on code formatting, variable names, or refactoring. Keep under 400 words."*
+   
+   Categorize all findings by Severity: 🔴 Critical (Spec Blocker), 🟡 High (Significant Drift), 🔵 Medium (Minor Gap), ⚪ Low (Advisory).
+   For EVERY finding in (b) and (c), you MUST state:
+   1. Location / Spec quote
+   2. The 'WHY' (Strategic & Product Impact — explain clearly why this discrepancy matters to the product/user/system)
+   3. Spec Expectation vs Diff Reality
+   4. Alignment Action.
+   Do NOT comment on code formatting or variable names. Keep under 500 words."*
 
 **Completion Criterion**: Auditor sub-agent launched and audit report received.
 
 ### Step 4: Audit Synthesis & Gate Decision
-Synthesize the sub-agent's findings into `alignment-audit-report.md`:
+Synthesize the sub-agent's findings into `alignment-audit-report.md` (and present summary to user):
 
 ```markdown
 # Alignment Audit Report
@@ -78,16 +113,27 @@ Synthesize the sub-agent's findings into `alignment-audit-report.md`:
 ### ✅ Fully Delivered Items
 - [Item 1 from Plan] (Commit: `a1b2c3d`)
 
-### ⚠️ Missing or Incomplete Items
-- [Missing Item 1] — *Quoted Plan Spec*: `"..."`
+### 🔴 Critical Discrepancies (Blockers)
+- **[Spec Section / Diff Hunk]**: [Summary]
+  - **The "WHY" (Strategic Impact)**: [Why this matters to product/user flow]
+  - **Spec vs Diff**: Quoted plan `"..."` vs Diff reality
+  - **Alignment Action**: [Steps to resolve]
 
-### 🚨 Unplanned Deviations & Scope Creep
-- [Unplanned Change 1] — *Diff Hunk*: `file.ts:L45-L60` (Not in approved plan)
+### 🟡 High Severity Discrepancies (Significant Drift)
+- ...
+
+### 🔵 Medium Severity Discrepancies (Minor Gaps)
+- ...
+
+### ⚪ Low Severity Items (Advisories / Clarifications)
+- ...
 
 ---
 
 ## 3. Audit Gate Decision
-- **Status**: [PASSED | DEVIATION DETECTED]
+- **Status**: [🟢 PASSED | 🟡 PASS WITH WARNING | 🔴 DEVIATION DETECTED]
+- **Critical Blockers**: N
+- **High Drift Items**: N
 - **Recommendation**: [Proceed to `code-review` OR Resolve Plan Deviations First]
 ```
 
